@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>抢票系统</title>
+    <link type="text/css" rel="stylesheet" href="/css/index.css"/>
+    <link href="/img/logo.ico" rel="shortcut icon" />
+    <script src="/js/jquery-3.1.1.min.js"></script>
+
+</head>
+<body>
+<header>
+    <ul class="clearfloat">
+        <li >易抢票</li>
+        <li>"心怀感恩，励志奋进"大学生励志成长事迹报告会</li>
+        <li>10-20&nbsp;&nbsp;14:30</li>
+    </ul>
+</header>
+<hr/>
+<main>
+        <ul id="site" class="clearfloat">
+            <li><img src="/img/site1.png"/>图书馆报告厅</li>
+            <li><img src="/img/site2.png"/>思学楼A114</li>
+            <li><img src="/img/site2.png"/>艺术大楼演播厅</li>
+        </ul>
+        <div id="seat">
+            <div id="choice">
+                <form id="library" name="library" action="/graspSeat" method="get">
+                    <input type="hidden" name="owner" th:value="${userId}"/>
+                    <table>
+                    </table>
+                    <hr/>
+                    <input type="submit" value="确认"/>
+                </form>
+
+                <form id="teaching" name="teaching" action="/graspSeat" method="get">
+                    <input type="hidden" name="owner" th:value="${userId}"/>
+                    <table>
+                    </table>
+                    <hr/>
+                    <input type="submit" value="确认"/>
+
+                </form>
+
+                <form>
+                    <table>
+
+                    </table>
+                    <hr/>
+                    <input type="submit" value="确认"/>
+                </form>
+            </div>
+            <div id="tip">
+                <p class="seattip">
+                    <span>
+                        亲爱的<span th:text="${name}">用户</span>,
+                        <span th:if="${location}">
+                            您的座位为：<span th:text="${location.building}">思学楼</span>
+                            <span th:text="${location.floor}">2</span>楼
+                            <span th:text="${location.row}">3</span>排
+                            <span th:text="${location.number}">34</span>号
+                        </span>
+                        <span th:unless="${location}">
+                            您还没有预订座位哦！
+                        </span>
+                    </span>
+                </p>
+                <p class="fritip"><span>*</span>每人只能选一张票，选票完成后，请按时到场参加活动</p>
+            </div>
+        </div>
+
+</main>
+</body>
+<script src="/js/load.js"></script>
+</html>

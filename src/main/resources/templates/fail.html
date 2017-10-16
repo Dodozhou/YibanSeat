@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link type="text/css" rel="stylesheet" href="/css/common.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/upload_error.css"/>
+    <link href="/img/logo.ico" rel="shortcut icon" />
+    <title>易抢票——抢座失败</title>
+</head>
+<body>
+<main>
+    <div id="container">
+        <ul>
+            <li>纳尼！？</li>
+            <li>WHAT!?</li>
+            <li>肿么回事！？</li>
+            <li><span th:text="${reason}">出错了......</span></li>
+            <li>我和小伙伴们都惊呆了&nbsp;&nbsp;惊呆了&nbsp;&nbsp;呆了&nbsp;&nbsp;了......</li>
+            <li><a href="/index">返回首页</a></li>
+        </ul>
+        <div id="imgdiv">
+            <img src="/img/upload_error.jpg"/>
+        </div>
+    </div>
+</main>
+</body>
+</html>
