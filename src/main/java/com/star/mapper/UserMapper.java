@@ -2,9 +2,11 @@ package com.star.mapper;
 
 import com.star.entity.User;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+@Component
+@Mapper
 public interface UserMapper {
     @Select("SELECT * FROM user")
     @Results({
@@ -19,7 +21,8 @@ public interface UserMapper {
     User getByYiBanId(String yibanId);
 
     @Insert("INSERT INTO user(name,yiban_id) VALUES(#{name}, #{yibanId})")
-    void insert(User user);
+    @Options(useGeneratedKeys=true,keyColumn = "id")
+    int insert(User user);
 
     @Select("SELECT * FROM user WHERE id = #{id}")
     @Results({

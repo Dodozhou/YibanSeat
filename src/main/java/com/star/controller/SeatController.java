@@ -3,8 +3,9 @@ package com.star.controller;
 import com.star.entity.Seat;
 import com.star.mapper.SeatMapper;
 import com.star.mapper.UserMapper;
-import com.star.util.SeatUtil;
 import org.apache.ibatis.annotations.Param;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,19 +15,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import org.apache.log4j.Logger;
+
 
 @Controller
 public class SeatController {
-    private static Logger logger=Logger.getLogger(SeatController.class);
+    private final SeatMapper seatMapper;
+    private final UserMapper userMapper;
+
     @Autowired
-    SeatMapper seatMapper;
-    @Autowired
-    UserMapper userMapper;
+    public SeatController(SeatMapper seatMapper, UserMapper userMapper) {
+        this.seatMapper = seatMapper;
+        this.userMapper = userMapper;
+    }
 
     @ResponseBody
     @RequestMapping("/getSeats")
-    public List<String> getSeats(HttpServletResponse response){
+    public List<String> getSeats(){
         /*response.setHeader("Access-Control-Allow-Credentials","true");
         response.setHeader("Access-Control-Allow-Methods","GET,POST");
         response.setHeader("Access-Control-Allow-Origin","*");*/
@@ -35,10 +39,8 @@ public class SeatController {
 
     @RequestMapping("/graspSeat")
     public String graspSeats(@RequestParam("seat") String seatNum,
-                             @Param("owner") Integer owner, Model model){
+                             @Param("owner") int owner, Model model){
         //不光要验证座位是否空余，还要验证该用户是否已经选了座位了！！！！！！
-        logger.debug("seatNum: "+seatNum);
-        logger.debug("owner: "+owner);
         if (seatMapper.getBySeatNum(seatNum).size()>0){
             model.addAttribute("reason","这个座位刚刚被抢了哦！");
             return "fail";
@@ -52,8 +54,7 @@ public class SeatController {
         seat.setSeatNum(seatNum);
         seat.setSpeach(1);
         seatMapper.add(seat);
-        logger.debug("In graspSeats(),the owner and seatNum is:"+owner+", "+seatNum);
-        logger.debug(userMapper.getOne(Long.valueOf(owner)).getName()+" Booked SeatNum : "+seat.getSeatNum());
+        //logger.debug(userMapper.getOne(Long.valueOf(owner)).getName()+" Booked SeatNum : "+seat.getSeatNum());
         return "redirect:/index";
     }
 

@@ -8,7 +8,7 @@ import com.star.entity.Seat;
 import com.star.mapper.SeatMapper;
 import com.star.mapper.UserMapper;
 import com.star.util.SeatUtil;
-import org.apache.log4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,17 +23,20 @@ import java.util.Map;
 
 @Controller
 public class BaseController {
-    private static Logger logger=Logger.getLogger(BaseController.class);
 
-    @Autowired
-    UserMapper userMapper;
-    @Autowired
-    SeatMapper seatMapper;
+    private final UserMapper userMapper;
+    private final SeatMapper seatMapper;
 
     private static final String appKey="f48cc159a0d4f1c7";
     private static final String appSecret="80c54652e5bcc48f83cb53337a4dca04";
     private static final String callbackurl="http://www.deardull.com:8080/autho";
     //private static final String callbackurl="http://localhost:8080/autho";
+
+    @Autowired
+    public BaseController(UserMapper userMapper, SeatMapper seatMapper) {
+        this.userMapper = userMapper;
+        this.seatMapper = seatMapper;
+    }
 
     @RequestMapping("/autho2")
     public void check2(HttpServletResponse response) throws IOException {
@@ -84,7 +87,7 @@ public class BaseController {
         private static Map<String,String> getYibanId(HttpServletRequest request,String token){
             Map<String,String> map;
             map=(Map<String, String>) request.getSession().getAttribute("userInfo");
-            if (map!=null || !map.isEmpty()){
+            if (map!=null){
                 return map;
             }
             User user=new User(token);
@@ -92,7 +95,6 @@ public class BaseController {
             JsonObject info=obj.get("info").getAsJsonObject();
             String nickname=info.get("yb_usernick").getAsString();
             String yibanId=info.get("yb_userid").getAsString();
-            request.getSession().setAttribute("yibanId",yibanId);
             map=new HashMap<>();
             map.put("yibanId",yibanId);
             map.put("nickname",nickname);

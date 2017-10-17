@@ -1,13 +1,14 @@
 package com.star.mapper;
 
 import com.star.entity.Seat;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+
+import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
+@Mapper
 public interface SeatMapper {
     @Select("select seat_num from seat")
     @Results({
