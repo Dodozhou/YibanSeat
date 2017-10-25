@@ -9,10 +9,10 @@ public class SeatUtil {
         Map<String,String> map=new HashMap<>();
         switch (seat[0]) {
             case "1":
-                map.put("building", "图书馆");
+                map.put("building", "图书馆报告厅");
                 break;
             case "2":
-                map.put("building", "思学楼");
+                map.put("building", "思学楼A114");
                 break;
             default:
                 map.put("building", "艺术演播大厅");

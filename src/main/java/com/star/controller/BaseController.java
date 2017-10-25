@@ -29,8 +29,8 @@ public class BaseController {
 
     private static final String appKey="f48cc159a0d4f1c7";
     private static final String appSecret="80c54652e5bcc48f83cb53337a4dca04";
-    private static final String callbackurl="http://www.deardull.com:8080/autho";
-    //private static final String callbackurl="http://localhost:8080/autho";
+    //private static final String callbackurl="http://www.deardull.com:8080/autho";
+    private static final String callbackurl="http://localhost:8080/autho";
 
     @Autowired
     public BaseController(UserMapper userMapper, SeatMapper seatMapper) {

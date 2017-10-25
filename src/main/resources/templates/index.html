@@ -19,7 +19,7 @@
 <hr/>
 <main>
         <ul id="site" class="clearfloat">
-            <li><img src="/img/site1.png"/>图书馆报告厅</li>
+            <li><img src="/img/site2.png"/>图书馆报告厅</li>
             <li><img src="/img/site2.png"/>思学楼A114</li>
             <li><img src="/img/site2.png"/>艺术大楼演播厅</li>
         </ul>
@@ -30,27 +30,41 @@
                     <table>
                     </table>
                     <hr/>
+                    <p class="placetip">本次活动不在该场地进行哦~</p>
                     <input type="submit" value="确认"/>
                 </form>
+
 
                 <form id="teaching" name="teaching" action="/graspSeat" method="get">
                     <input type="hidden" name="owner" th:value="${userId}"/>
                     <table>
                     </table>
                     <hr/>
+                    <p class="placetip">本次活动不在该场地进行哦~</p>
+                    <hr/>
                     <input type="submit" value="确认"/>
 
                 </form>
+
 
                 <form>
                     <table>
 
                     </table>
+                    <p class="placetip">本次活动不在该场地进行哦~</p>
                     <hr/>
                     <input type="submit" value="确认"/>
                 </form>
             </div>
+
+
+
             <div id="tip">
+                <ul id="imgtip" class="clearfloat">
+                    <li><img src="img/enable.jpg"/>可选座位</li>
+                    <li><img src="img/disable.jpg"/>不可选座位</li>
+                    <li><img src="img/mychoose.jpg"/>已选座位</li>
+                </ul>
                 <p class="seattip">
                     <span>
                         亲爱的<span th:text="${name}">用户</span>,
