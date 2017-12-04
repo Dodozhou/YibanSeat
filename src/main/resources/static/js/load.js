@@ -3,40 +3,6 @@
  */
 window.onload=function(){
 
-    // var xmlHttpReq=null;
-    // var url="http://www.deardull.com:8080/getSeats";
-    // if(window.ActiveXObject){
-    //     xmlHttpReq=new ActiveXObject("Microsoft.XMLHTTP");
-    // }else{
-    //     xmlHttpReq=new XMLHttpRequest();
-    // }
-    // xmlHttpReq.open("GET",url,true);
-    // xmlHttpReq.send(null);
-    // xmlHttpReq.onreadystatechange=RequestCallBack;
-
-    // function RequestCallBack(){
-    //     if(xmlHttpReq.readyState==4){
-    //         if(xmlHttpReq.status==200){
-    //             // document.getElementById('data').innerHTML=xmlHttpReq.responseText;
-    //             var myJSON=JSON.parse(xmlHttpReq.responseText);
-    //             // alert(typeof myJSON);//object
-    //
-    //             var jsonArr=[];
-    //             for(var i=0;i<myJSON.length;i++){
-    //                 jsonArr[i]=myJSON[i];
-    //             }
-    //
-    //             // for(var i in myJSON){
-    //             //     jsonArr[i]=myJSON[i];
-    //             // }
-    //             // alert(jsonArr);
-    //             // alert(jsonArr instanceof  Array);//true
-    //             seatsRed(jsonArr,arrtd[i]);
-    //         }
-    //     }
-    // }
-    //
-
     var arrtbl=document.getElementsByTagName('table');
 
     //图书馆报告厅
@@ -251,35 +217,47 @@ window.onload=function(){
     str1+='<tr/>';
     arrtbl[1].innerHTML=str1;
 
+    //页面加载时，判断用户是否选择了座位，将用户自己选择的座位变红
+    $.ajax({
+        type:"GET",
+        url:"http://www.deardull.com:8080/getMySeat",
+        dataType:"jsonp",
+        jsonp:"callback",
+        success:function(data){
+            seatMyChoosed(data);
+        },
+        error: function (e) {
+            console.log("Error");
+        }
+    });
+
 
     //切换
     var arrform=document.getElementsByTagName('form');
     var place=0;
     var site=document.getElementById('site');
     var seat=document.getElementById('seat');
+    var oBtnGroup=document.getElementById('btnGroup');
+    var arrBtn=oBtnGroup.getElementsByTagName('input');
     var tip=document.getElementById('tip');
     var arrLi=site.getElementsByTagName('li');
     function placeChoose(index){
         arrLi[index].getElementsByTagName('img')[0].src='img/site1.png';
         arrLi[index].style.color='#ff3333';
         arrLi[index].style.borderBottom='1px solid #ff3333';
-        // arrLi[index].classList.add('placechoose');
         for(var i=0;i<arrform.length;i++){
             arrform[i].style.display='none';
+            arrBtn[i].style.display='none';
         }
         arrform[index].style.display='block';
-
+        arrBtn[index].style.display='block';
         arrform[index].querySelector('table').style.display='block';
-        arrform[index].querySelector('hr').style.display='block';
-        arrform[index].querySelector('input[type="submit"]').style.display='block';
         arrform[index].querySelector('.placetip').style.display='none';
 
         if(index==2){
             arrform[index].querySelector('table').style.display='none';
-            arrform[index].querySelector('hr').style.display='none';
-            arrform[index].querySelector('input[type="submit"]').style.display='none';
+            arrBtn[index].style.display='block';
             arrform[index].querySelector('.placetip').style.display='block';
-
             tip.style.display='none';
         }else{
             tip.style.display='block';
@@ -289,6 +267,7 @@ window.onload=function(){
 
     for(var i=0;i<arrLi.length;i++){
         arrLi[i].index=i;
+        arrBtn[i].index=i;
         arrLi[i].onclick=function () {
             //li
             for(var j=0;j<arrform.length;j++){
@@ -306,13 +285,19 @@ window.onload=function(){
             }
             if(this.index==place){
                 tip.style.display='block';
+                for(var k=0;k<arrBtn.length;k++){
+                    if(arrBtn[k].index==place){
+                        arrBtn[k].style.display='block';
+                    }
+                }
             }else{
+                for(var k=0;k<arrBtn.length;k++){
+                    arrBtn[k].style.display='none';
+                }
                 tip.style.display='none';
             }
             arrform[this.index].style.display='block';
             arrform[this.index].querySelector('table').style.display='none';
-            arrform[this.index].querySelector('hr').style.display='none';
-            arrform[this.index].querySelector('input[type="submit"]').style.display='none';
             arrform[this.index].querySelector('.placetip').style.display='block';
             if(this.index==place){
                 placeChoose(place);
@@ -324,6 +309,7 @@ window.onload=function(){
     //抢票
     var arrtd=document.getElementsByTagName('td');
 
+    //被下边for循环替代
     $.getJSON("/getSeats", function (seats) {
         var seatsSelected=seats;
     for(var i=0;i<arrtd.length;i++){
@@ -346,9 +332,26 @@ window.onload=function(){
     }
 
     });
+    // for(var i=0;i<arrtd.length;i++){
+    //     if(arrtd[i].querySelector('img')){
+    //         arrtd[i].able='true';
+    //         arrtd[i].classList.add('unchecked');
+    //
+    //         //向后端传座位号
+    //         var input=arrtd[i].getElementsByTagName('input')[0];
+    //         input.value=input.value.replace('/','');
+    //     }
+    //
+    //     var seatsSelected=['1_1_05_15','1_1_05_16','1_1_05_17','1_1_05_18','1_1_05_19','1_2_05_15','1_2_05_16','1_2_07_17','1_2_07_18','1_2_07_19'];
+    //     seatsDisable(seatsSelected,arrtd[i]);
+    //
+    //     arrtd[i].onclick=function(){
+    //         beforeChoice();
+    //         myChoice(this);
+    //     };
+    // }
 
-
-    //选过的座位变红，并且不可再选
+    //选过的座位变成灰色，并且不可再选
     function seatsDisable(arrSeats,td){
         if(td.querySelector('img')){
             var input=td.getElementsByTagName('input')[0];
@@ -359,6 +362,7 @@ window.onload=function(){
                     input.disabled='disabled';//使其点击时，不可再选
                     td.className='checked';
                     td.querySelector('img').src="img/disable.jpg";
+                    td.querySelector('img').alt="disabled";
                 }
             }
         }
@@ -369,15 +373,35 @@ window.onload=function(){
         for(var j=0;j<arrtd.length;j++){
             if(arrtd[j].able=='false'){
                 arrtd[j].querySelector('img').src='img/enable.jpg';
+                arrtd[j].querySelector('img').alt='enable';
                 arrtd[j].classList.add('unchecked');
                 arrtd[j].classList.remove('mychecked');
             }
         }
     }
+    //解析座位号
+    var numArrSeatInfo=[];
+    function seatParse(s){
+        var arrSeatInfo=s.split('_');
+        numArrSeatInfo=arrSeatInfo.map(function(item,index,array){
+            return Number(item);
+        });
+        if(numArrSeatInfo[0]===1){
+            location='图书馆报告厅';
+        }else if(numArrSeatInfo[0]===2){
+            location='思学楼A114';
+        }else if(numArrSeatInfo[0]===3){
+            location='艺术大楼演播厅';
+        }
+    }
+
     //选择我的座位
+    var oSeatInfo=document.getElementsByClassName('seatInfo')[0];
+    oSeatInfo.innerHTML='您还有没选择座位';
+    var location='';
     function myChoice(td){
         var flag;
-        if(td.getElementsByTagName('input')[0].disabled==true){
+        if(td.getElementsByTagName('input')[0].disabled===true){
             flag=true;
         }else{
             flag=false;
@@ -386,9 +410,38 @@ window.onload=function(){
             var radio=td.getElementsByTagName('input')[0];
             radio.checked=true;
             td.querySelector('img').src='img/mychoose.jpg';
+            td.querySelector('img').alt='disabled';
             td.classList.add('mychecked');
             td.able='false';
+            var seatString=radio.value;
+            seatParse(seatString);
+            oSeatInfo.innerHTML='您的座位为：'+location+' '+numArrSeatInfo[1]+'楼 '+numArrSeatInfo[2]+'排 '+numArrSeatInfo[3]+'座';
         }
     }
 
+
+    //再次进入时页面时，自己选的座位给出提示信息，并把自己选的座位变红
+    function seatMyChoosed(data){
+        var seatString=data;
+        seatParse(seatString);
+        if(seatString!=''){
+            oSeatInfo.innerHTML='您的座位为：'+location+' '+numArrSeatInfo[1]+'楼 '+numArrSeatInfo[2]+'排 '+numArrSeatInfo[3]+'座';
+            for(var i=0;i<arrtd.length;i++){
+                if(arrtd[i].querySelector('input')){
+                    var input=arrtd[i].getElementsByTagName('input')[0];
+                    input.disabled="disabled";
+                    arrtd[i].classList.add('mychecked');
+                    if(input.value===seatString){
+                        var redImg=arrtd[i].getElementsByTagName('img')[0];
+                        input.checked=true;
+                        redImg.src='/img/mychoose.jpg';
+                        redImg.alt="mySeat";
+                    }
+                }
+            }
+
+        }else{
+            oSeatInfo.innerHTML='您还没有选择座位';
+        }
+    }
 };
