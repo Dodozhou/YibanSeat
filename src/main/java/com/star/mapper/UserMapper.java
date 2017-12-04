@@ -5,25 +5,49 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
+/**
+ * User用户持久化接口
+ */
 @Component
 @Mapper
 public interface UserMapper {
+    /**
+     * 返回所有User
+     * @return 包含所有User列表
+     */
     @Select("SELECT * FROM user")
     @Results({
             @Result(property = "yibanId",  column = "yiban_id")
     })
     List<User> getAll();
 
-    @Select("SELECT * FROM user WHERE yiban_id = #{yibanId}")
+    /**
+     * 通过易班id查询用户
+     * @param Id 易班Id
+     * @return User实体
+     */
+    @Select("SELECT * FROM user WHERE yiban_id = #{Id}")
     @Results({
             @Result(property = "yibanId",  column = "yiban_id")
     })
-    User getByYiBanId(String yibanId);
+    List<User> getByYiBanId(String Id);
 
+    /**
+     * 插入用户.
+     * 新创建用户
+     * @param user User实体
+     * @return 受影响的行数
+     */
     @Insert("INSERT INTO user(name,yiban_id) VALUES(#{name}, #{yibanId})")
     @Options(useGeneratedKeys=true,keyColumn = "id")
     int insert(User user);
 
+    /**
+     * 通过用户id查询用户.
+     * @param id 用户id
+     * @return 返回User实体
+     */
     @Select("SELECT * FROM user WHERE id = #{id}")
     @Results({
             @Result(property = "yibanId",  column = "yiban_id")

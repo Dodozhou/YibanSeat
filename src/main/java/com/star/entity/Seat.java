@@ -1,5 +1,13 @@
 package com.star.entity;
 
+/**
+ * 座位实体类.
+ * 包含座位的信息:<br>
+ *     id:座位记录的id<br>
+ *     seatNum：座位编号<br>
+ *     owner:用户 <br>
+ *     speach:活动Id <br>
+ */
 public class Seat {
     private int id;
     private String seatNum;

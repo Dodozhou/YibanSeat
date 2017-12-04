@@ -1,5 +1,9 @@
 package com.star.entity;
 
+/**
+ * 用户实体.
+ * 包含用户相关信息的实体类
+ */
 public class User {
     private int id;
     private String name;

@@ -1,7 +1,11 @@
 package com.star.entity;
 
+/**
+ * 活动实体.
+ * 包含活动相关信息的实体类
+ */
 public class Speach {
-    private int id;
+    private int id=-1;
     private String title;
     private String speaker;
     private String description;

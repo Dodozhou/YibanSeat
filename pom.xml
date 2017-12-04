@@ -25,7 +25,23 @@
 	</properties>
 
 	<dependencies>
+		<!--+++++++++++++++++集成log4j2日志+++++++++++++++-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+		<!--++++++++++++++++++++++++++++++++++++++++++++-->
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
@@ -76,9 +92,27 @@
 		</dependency>
 		<!--+++++++++++++-->
 
-		<!--+++日志依赖+++-->
 
-		<!--+++++++++++++-->
+
+		<!--++++++HttpUnit Web测试+++++++-->
+		<!--<dependency>
+			<groupId>httpunit</groupId>
+			<artifactId>httpunit</artifactId>
+			<version>1.7</version>
+		</dependency>
+		<dependency>
+			<groupId>rhino</groupId>
+			<artifactId>rhino</artifactId>
+			<version>1.5R4.1</version>
+		</dependency>-->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+
+
 	</dependencies>
 
 	<build>

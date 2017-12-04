@@ -3,7 +3,16 @@ package com.star.util;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 座位实体工具类.
+ */
 public class SeatUtil {
+    /**
+     * 座位编号加工方法.
+     * 将seatNum字符串分解，解析成用户友好的信息，并装入map返回
+     * @param seatNum 座位标号
+     * @return 包含作为信息的map.
+     */
     public static Map<String,String> seatNumUtil(String seatNum){
         String[] seat=seatNum.split("_");
         Map<String,String> map=new HashMap<>();
