@@ -12,6 +12,7 @@ main{
 }
 #container>ul>li{
     color: #000;
+    padding:3px 0;
 }
 #container>ul>li:first-child{
     font-weight:600;
