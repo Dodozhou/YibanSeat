@@ -1,46 +1,5 @@
-/* http://meyerweb.com/eric/tools/css/reset/
-   v2.0 | 20110126
-   License: none (public domain)
-*/
-
-html, body, div, span, iframe,
-a,img, ul, li, form, label,
-table,tbody, tfoot, thead, tr, td,
-footer, header{
-    margin: 0;
-    padding: 0;
-    border: 0;
-    vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-footer, header, section {
-    display: block;
-}
-body {
-    font-size: 10px;
-    line-height: 1;
-    color: #494949;
+body{
     min-width:890px;
-}
-ol, ul {
-    list-style: none;
-}
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
-}
-
-.clearfloat::after{
-    content: '';
-    display: block;
-    clear: both;
-    height:0;
-    overflow: hidden;
-}
-
-header{
-    width:80%;
-    margin:0 auto;
 }
 /*header*/
 header>ul{
@@ -72,10 +31,6 @@ hr{
     border:none;
     border-top:1px solid #eee;
 }
-main{
-    width:80%;
-    margin:0 auto;
-}
 #site{
     margin:15px;
 
@@ -95,9 +50,8 @@ main{
 }
 #seat{
     width:100%;
-    /*height:500px;*/
     padding:20px;
-    max-height:500px;
+    max-height:550px;
     border:1px solid #ddd;
 }
 #choice{
@@ -106,7 +60,7 @@ main{
     overflow:auto;
 }
 #choice form{
-    margin:0 auto;
+    margin:0 auto 30px;
 }
 #choice form table td{
     width:22px;
@@ -140,31 +94,6 @@ main{
     width:20px;
     height:20px;
 }
-#choice form>hr{
-    margin:20px 0 10px;
-    width:100%;
-    border:none;
-    border-top:1px solid #eee;
-}
-#choice form>input[type="submit"]{
-    margin:10px 0;
-    padding:3px 8px;
-    outline: none;
-    background:#fff;
-    color:#ff3333;
-    border:1px solid #ff4d46;
-    cursor: pointer;
-}
-#choice form>input[type="submit"]:hover{
-    -webkit-transition-duration: 300ms;
-    -moz-transition-duration: 300ms;
-    -ms-transition-duration: 300ms;
-    -o-transition-duration: 300ms;
-    transition-duration: 300ms;
-    color: #ffffff;
-    background: #ff6e68;
-    border:1px solid #ff6e68;
-}
 .placetip{
     width:100%;
     text-align: center;
@@ -179,6 +108,26 @@ main{
 }
 .checked{
     cursor: auto;
+}
+#seat>#btnGroup>input[type="submit"]{
+    float: right;
+    margin:15px 0 0;
+    padding:3px 8px;
+    outline: none;
+    background:#fff;
+    color:#ff3333;
+    border:1px solid #ff4d46;
+    cursor: pointer;
+}
+#seat>#btnGroup>input[type="submit"]:hover{
+    -webkit-transition-duration: 300ms;
+    -moz-transition-duration: 300ms;
+    -ms-transition-duration: 300ms;
+    -o-transition-duration: 300ms;
+    transition-duration: 300ms;
+    color: #ffffff;
+    background: #ff6e68;
+    border:1px solid #ff6e68;
 }
 #tip{
     /*border-top:1px solid #eee;*/

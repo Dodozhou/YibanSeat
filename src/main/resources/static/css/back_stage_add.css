@@ -1,0 +1,20 @@
+header {
+  margin: 15px auto; }
+  header h1 {
+    height: 65px;
+    line-height: 65px;
+    font-size: 2.5em;
+    color: #0275d8;
+    font-weight: 500; }
+
+hr {
+  width: 100%;
+  border: none;
+  border-top: 1px solid #eee; }
+
+main form fieldset label {
+  cursor: pointer;
+  font-size: 1.5em;
+  margin-top: 13px; }
+
+/*# sourceMappingURL=back_stage_add.css.map */

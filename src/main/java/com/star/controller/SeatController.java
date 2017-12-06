@@ -53,23 +53,32 @@ public class SeatController {
      */
     @ResponseBody
     @RequestMapping("/getSeats")
-    public List<String> getSeats(){
+    public List<String> getSeats(HttpServletRequest request){
         /*response.setHeader("Access-Control-Allow-Credentials","true");
         response.setHeader("Access-Control-Allow-Methods","GET,POST");
         response.setHeader("Access-Control-Allow-Origin","*");*/
-        return seatMapper.getAll();
+        List<String> seats=seatMapper.getAll();
+        String mySeat=(String)request.getSession().getAttribute("MySeat");
+        if (mySeat==null){
+            mySeat="";
+        }
+        seats.add(mySeat);
+        return seats;
     }
 
-    @ResponseBody
+   /* @ResponseBody
     @RequestMapping("/getMySeat")
     public String getMySeatSuccess(@RequestParam("callback") String callback, HttpServletRequest request){
         Gson gson=new Gson();
         String mySeat=(String)request.getSession().getAttribute("MySeat");
+        if (mySeat==null){
+            mySeat="";
+        }
         if (callback==null || callback.isEmpty()){
             return gson.toJson(mySeat);
         }else
         return callback+"("+gson.toJson(mySeat)+")";
-    }
+    }*/
 
     /**
      * 抢座接口.
@@ -80,8 +89,8 @@ public class SeatController {
      * @return "redirect:/index" 重定向至首页；"fail" 抢座失败，转向错误页面
      */
     @RequestMapping("/graspSeat")
-    public String graspSeats(@RequestParam("seat") String seatNum,
-                             @Param("owner") String owner, Model model){
+    public String graspSeats(@RequestParam(value = "seat",required = false) String seatNum,
+                             @RequestParam(value = "owner",required = false) String owner, Model model){
 
         if (seatNum==null || seatNum.isEmpty() || owner==null || owner.isEmpty()){
             model.addAttribute("reason","出错啦，请返回主页刷新重试！");

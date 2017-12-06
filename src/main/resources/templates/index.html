@@ -3,86 +3,77 @@
 <head>
     <meta charset="UTF-8" />
     <title>抢票系统</title>
-    <link type="text/css" rel="stylesheet" href="/css/index.css"/>
-    <link href="/img/logo.ico" rel="shortcut icon" />
-    <script src="/js/jquery-3.1.1.min.js"></script>
+    <meta name="keyword" content="抢票系统"/>
+    <meta name="description" content="易班——抢票"/>
+    <link rel="short icon" type="image/x-icon" href="img/logo.ico"/>
+    <link type="text/css" rel="stylesheet" href="css/common.css"/>
+    <link type="text/css" rel="stylesheet" href="css/index.css"/>
 </head>
 <body>
-<header>
-    <ul class="clearfloat">
-        <li >易抢票</li>
-        <li>"心怀感恩，励志奋进"大学生励志成长事迹报告会</li>
-        <li>10-20&nbsp;&nbsp;14:30</li>
-    </ul>
-</header>
-<hr/>
-<main>
-        <ul id="site" class="clearfloat">
-            <li><img src="/img/site2.png"/>图书馆报告厅</li>
-            <li><img src="/img/site2.png"/>思学楼A114</li>
-            <li><img src="/img/site2.png"/>艺术大楼演播厅</li>
+    <header>
+        <ul class="clearfloat">
+            <li >易抢票</li>
+            <li>"心怀感恩，励志奋进"大学生励志成长事迹报告会</li>
+            <li>2017-10-20&nbsp;&nbsp;14:30</li>
         </ul>
-        <div id="seat">
-            <div id="choice">
-                <form id="library" name="library" action="/graspSeat" method="get">
-                    <input type="hidden" name="owner" th:value="${userId}"/>
-                    <table>
-                    </table>
-                    <hr/>
-                    <p class="placetip">本次活动不在该场地进行哦~</p>
-                    <input type="submit" value="确认"/>
-                </form>
+    </header>
+    <hr/>
+    <main>
+            <ul id="site" class="clearfloat">
+                <li><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAMAAAC6V+0/AAAAvVBMVEUAAACLi4uKioqJiYmKioqKioqKioqMjIyIiIiKioqFhYWJiYmJiYmEhISLi4uJiYmLi4uAgICDg4OKioqJiYmOjo6KioqKioqMjIyKioqOjo6Li4uIiIiKioqGhoaGhoaKioqMjIyYmJiKioqJiYmPj4+CgoKMjIyHh4eFhYWTk5ORkZGLi4ugoKCWlpaMjIyDg4OUlJR9fX2fn5+UlJSGhoaDg4ONjY2FhYXn5+ednZ2EhISdnZ2lpaWcnJxVLizuAAAAP3RSTlMAxSMa57qMM6CSb1MqD+vq4N3Ww726trGll25raGVfUEpBOTgLBff16uXi3snGvrOlnJSRkI+NgH5tTT01KRPx6yC2AAAAsElEQVQY033P1QrDQBBA0bsbT5O6u7u7//9ntZANaSjkwDDDfRsSSLtcqZRtyY/69GgNhwMn3YiaO9GCQxu7oM6shK5hdOA111Q0TWhnWi29Dc5ZxVIXhAXWEu5VFYsW0gAwPJ5h3KRAfCcloLNV8bqDnm6aeg/si4qjRR+8Ws2DR26E0syj5G8QKhyCvV8R8Wd9gIHux57PAWQbxKxP4JSIe6c1mfEhzi2IJn9EkUQfB1AK3vz0T6sAAAAASUVORK5CYII="/>图书馆报告厅</li>
+                <li><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAMAAAC6V+0/AAAAvVBMVEUAAACLi4uKioqJiYmKioqKioqKioqMjIyIiIiKioqFhYWJiYmJiYmEhISLi4uJiYmLi4uAgICDg4OKioqJiYmOjo6KioqKioqMjIyKioqOjo6Li4uIiIiKioqGhoaGhoaKioqMjIyYmJiKioqJiYmPj4+CgoKMjIyHh4eFhYWTk5ORkZGLi4ugoKCWlpaMjIyDg4OUlJR9fX2fn5+UlJSGhoaDg4ONjY2FhYXn5+ednZ2EhISdnZ2lpaWcnJxVLizuAAAAP3RSTlMAxSMa57qMM6CSb1MqD+vq4N3Ww726trGll25raGVfUEpBOTgLBff16uXi3snGvrOlnJSRkI+NgH5tTT01KRPx6yC2AAAAsElEQVQY033P1QrDQBBA0bsbT5O6u7u7//9ntZANaSjkwDDDfRsSSLtcqZRtyY/69GgNhwMn3YiaO9GCQxu7oM6shK5hdOA111Q0TWhnWi29Dc5ZxVIXhAXWEu5VFYsW0gAwPJ5h3KRAfCcloLNV8bqDnm6aeg/si4qjRR+8Ws2DR26E0syj5G8QKhyCvV8R8Wd9gIHux57PAWQbxKxP4JSIe6c1mfEhzi2IJn9EkUQfB1AK3vz0T6sAAAAASUVORK5CYII="/>思学楼A114</li>
+                <li><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAMAAAC6V+0/AAAAvVBMVEUAAACLi4uKioqJiYmKioqKioqKioqMjIyIiIiKioqFhYWJiYmJiYmEhISLi4uJiYmLi4uAgICDg4OKioqJiYmOjo6KioqKioqMjIyKioqOjo6Li4uIiIiKioqGhoaGhoaKioqMjIyYmJiKioqJiYmPj4+CgoKMjIyHh4eFhYWTk5ORkZGLi4ugoKCWlpaMjIyDg4OUlJR9fX2fn5+UlJSGhoaDg4ONjY2FhYXn5+ednZ2EhISdnZ2lpaWcnJxVLizuAAAAP3RSTlMAxSMa57qMM6CSb1MqD+vq4N3Ww726trGll25raGVfUEpBOTgLBff16uXi3snGvrOlnJSRkI+NgH5tTT01KRPx6yC2AAAAsElEQVQY033P1QrDQBBA0bsbT5O6u7u7//9ntZANaSjkwDDDfRsSSLtcqZRtyY/69GgNhwMn3YiaO9GCQxu7oM6shK5hdOA111Q0TWhnWi29Dc5ZxVIXhAXWEu5VFYsW0gAwPJ5h3KRAfCcloLNV8bqDnm6aeg/si4qjRR+8Ws2DR26E0syj5G8QKhyCvV8R8Wd9gIHux57PAWQbxKxP4JSIe6c1mfEhzi2IJn9EkUQfB1AK3vz0T6sAAAAASUVORK5CYII="/>艺术大楼演播厅</li>
+            </ul>
+            <div id="seat">
+                <div id="choice">
+                    <form id="library" name="library" action="/graspSeat" method="get">
+                        <input type="hidden" name="owner" th:value="${userId}"/>
+                        <table>
+                        </table>
+                        <p class="placetip">本次活动不在该场地进行哦~</p>
+                    </form>
 
 
-                <form id="teaching" name="teaching" action="/graspSeat" method="get">
-                    <input type="hidden" name="owner" th:value="${userId}"/>
-                    <table>
-                    </table>
-                    <hr/>
-                    <p class="placetip">本次活动不在该场地进行哦~</p>
-                    <hr/>
-                    <input type="submit" value="确认"/>
-
-                </form>
+                    <form id="teaching" name="teaching" action="/graspSeat" method="get">
+                        <input type="hidden" name="owner" th:value="${userId}"/>
+                        <table>
+                        </table>
+                        <p class="placetip">本次活动不在该场地进行哦~</p>
+                    </form>
 
 
-                <form>
-                    <table>
+                    <form id="artBuilding">
+                        <table>
 
-                    </table>
-                    <p class="placetip">本次活动不在该场地进行哦~</p>
-                    <hr/>
-                    <input type="submit" value="确认"/>
-                </form>
+                        </table>
+                        <p class="placetip">本次活动不在该场地进行哦~</p>
+                    </form>
+                </div>
+
+                <div id="btnGroup" class="clearfloat">
+                    <input form="library" type="submit" value="确认"/>
+                    <input form="teaching" type="submit" value="确认"/>
+                    <input form="artBuilding" type="submit" value="确认"/>
+                </div>
+
+
+                <div id="tip">
+                    <ul id="imgtip" class="clearfloat">
+                        <li><img src="data:image/jpg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAcFBQYFBAcGBgYIBwcICxILCwoKCxYPEA0SGhYbGhkWGRgcICgiHB4mHhgZIzAkJiorLS4tGyIyNTEsNSgsLSz/2wBDAQcICAsJCxULCxUsHRkdLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCz/wgARCABSAFUDAREAAhEBAxEB/8QAHAAAAQUBAQEAAAAAAAAAAAAAAAECBQYHBAMI/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEAMQAAAA+kTJzzPQB4wcQhtB0lQM/NvAAAQqJRDZDLzzNaAAACEMpLceRGGtgAABElLHARZrgAAARBTBRSNNaAAACGKcPGnEasAAAEOU4UQ4zVQAAAiCmDhpXCRGgPGinOWg5zjOA0UBQADwKCXosZghRBgAAohuhox//8QAORAAAAQEAgYIBAUFAAAAAAAAAQIDBAAFBgcRNhJBVnSUshAWIFFzs8LSF3Wk0RMUISIyFTE1QpL/2gAIAQEAAT8Ai5ldO036Ehp9yqDrTwVOh/fHUQIQt7XSzYiilYuUVDBiYgulv2wlbmuMT/jVsuTu0HSxoG3Nc7ar8UtAW3rbQzw6094Vj4c1ztqvxS0BbquNtV+KWhOoqjt3WANZ7MV5m1UAMdNY5ymIOsmlrDXDB83mbFJ40VKqgsUDEOGsOisK+ldMYs1FTmfKpGFMiZcdAdQnizciLNZ27njw4qnaG/ZjrUNjiboDs3HkLKc0m8WcpYrMkjLJH1lwi1ldsJPKlZdNXYIEKfFKEHSLhAiyKhVEzhiUxRxAQikaclE/q2rFZmzB2s1mRwT0zm1nPFiP8dN/GJ26xyXOtzV5Bi2tvpRVFOOXz8VwWI5MgX8I+oCF98WeVUWodT/cE3ZyB/ySLZZzrr5h61YsQfFnOSdypO3U5QPSk1L3tVOUYsbkp7v5/LJFlslu9/PyJxbLOddfMfWtFiv4TzxCert1QYS0nNjBqaK8gxY3JT3fz+WSLLZMeb+fkTi2Wcq6+Y+tWLGfwnnik9Xbq02FHzg3czV5BixuSnu/n8skWUya834/lki2ec663/1rRZI2JJ7vBe3VZQNSE33RXkGLG5Keb+fyyRZXJjzfz8hItlnSu9/9a0WUJmHxyF5u3VKYq0lNyd7NXkGLG5Ke7+fyyRZnElFOd+PyEi2mcq83/wBa0SnrtRT1+jLqdByDxUVMRSMcBwxwwEpgga/uLsh9Et7o+Idw9j/oF/dHxDuHsh9Av7oLX9w9kPo1vdAXDuFsf9Et7oG4df7Gn4JaHlaXCfMXDVSldAi6ZkzGBkrrDARARNFo5O7k1GqJPkDIKruTrAQ/dgUvpizBMKMdb8flJE9tzOSTp8/p6eLsPz6orLEKqcmJhEdZYoC4a7OZKyGpnX6lOYCulz4AQS6jmNhHW+nNoJXxaf3jrfTm0Er4tP7x1up3aCV8Wn9463U5tDKuLT90dbqc2hlXFp+6Ot1ObQyri0/dDmtKcQaLLf12WnFMgmwI5IYxsAx/QAHERiWT2rK4mT5WUviMZamcCFE5A+wiIxRtNqU3IRZLLgqodYyxjFLrNGqLooJBWLnBImJtHGFgAFTYdAwPRqCNQxZbJpvGP0f/xAAUEQEAAAAAAAAAAAAAAAAAAABg/9oACAECAQE/AHP/xAAUEQEAAAAAAAAAAAAAAAAAAABg/9oACAEDAQE/AHP/2Q=="/>可选座位</li>
+                        <li><img src="data:image/jpg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgFBgcGBQgHBgcJCAgJDBMMDAsLDBgREg4THBgdHRsYGxofIywlHyEqIRobJjQnKi4vMTIxHiU2OjYwOiwwMTD/2wBDAQgJCQwKDBcMDBcwIBsgMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDD/wgARCABSAFUDAREAAhEBAxEB/8QAHAAAAgIDAQEAAAAAAAAAAAAAAAUCBgEDBwQI/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEAMQAAAA7+c6KGAAAEztI1OeFHG5giQNoGkyXg5YZH5oKqaR+ODBXhcOCA+EwgA9JbzAlFQ1ID48xUyA7HpgSioakB4Vs9BM0DI94lFQ1IHrK+ZADYWsTioakB8YAAABKKhqaCZgAAAPQJxwSPSAAAALx6ddPm0gAAAAdFOsH//EAEAQAAIAAwQDCgwEBwAAAAAAAAECAAMEBQYREkFx0RAVITEyNFNUkrEHExQWIjZRc4KjwuFhgZHBIzBScoOhov/aAAgBAQABPwCPCRfR6IvYtj86bgmzf6AdAhLtvMUO9UAzcLDJp14x5sHrY7H3jzYPWx2PvHmwetjsfePNg9bHY+8ebB64Ox94op9bdK0ZFZSTs406A40gjE6Iu5blLb1mpV0jcYGddKNpB3H8Llk9QrD2YrLTlWvfGbXSJbS5dQ2YK/HycO8QdO5MdJYxcjCEq5LnKpEEYDj3KyQk+lmpMGII/T8Y8GF7KK7yV6Wk83JOMsywoJAIzZjA8J12+nnD/EYuxTpPNRnRHyZSMwB9uyJCBLyBQAACeAf2wdMWhUrSU5mN7Iqq2bUuWd9SjiEI7IcUYqRpBiw7Vad/BncLDiO43CjD2iLt0UqsNQJyBwuX99kVYEqqnIuACuygajFz+Or1LCesw1/TAi85bxCLozbd2yWZa2WV9pjQNUNyG1Rc/lVPwRV8+qfet3mLn8dXqWE9Zhr+nctSjWspWQEBgMRE+Q8h2SYpUj/cAYxd+zXD+OmjKMPRBj9obkNqi5/Kqfgir59U+9bvMXP46vUsJ6zDX9MTZiyULseBYrbZmvPJktlUGJVr00+WEqqcYjTx4xLrLOknOqL+SxV24zsBIGRRFk2olUuQ8DQ4wDaoufyqn4Iq+fVPvW7zFz+Or1LCesw1/TF4jO8XkkIWDcorC0dR0LR5FUdE0eRVHRNHkVR0TRSyKqRODpLIIiQ7PSh3XK5HCPZFz+VU/BFXz6p963eYufx1epYT1m/P6YKgmMgjIIyCMgjIsEAK2qLn8qp+CKvn1T71u8xdAgGr1J+8V4qZFrzKiRId8uGU5CQfRw0RvpaXVPlttjfS0uqfLbbG+lpdU+W22N9LS6p8ttsb6Wl1T5bbY30tLqny22xvnaRBHkny22xdSTMkmo8dLeXmy4ZgRjx+2Kzn1T71u+LRse1bqVDirpiZLkATRwq44cMDoP4GKK2qbPjPfKp0ZScP0g21Z3Tf8NsjfqzulPYbZG/VndKew2yN+rO6U9htkb9Wd0p7DbI36s7pT2G2Rv1ZwRsJvDo9FtkTLZYnJTKZsxzguAPdxmLI8GdoWjINTXzRSPMOYIUzGK+TKn0M+XPlpNRkOKuAQeCKoATZgHtPf/I8CciS9TWTXlIXQDI5AJG5/8QAFBEBAAAAAAAAAAAAAAAAAAAAYP/aAAgBAgEBPwBz/8QAFBEBAAAAAAAAAAAAAAAAAAAAYP/aAAgBAwEBPwBz/9k="/>不可选座位</li>
+                        <li><img src="data:image/jpg;base64,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"/>已选座位</li>
+                    </ul>
+                    <p class="seattip">
+                        <span>
+                            亲爱的<span th:text="${name}">用户</span>,<span class="seatInfo"></span>
+                        </span>
+                    </p>
+                    <p class="fritip"><span>*</span>每人只能选一张票，选票完成后，请按时到场参加活动</p>
+                </div>
             </div>
 
-
-
-            <div id="tip">
-                <ul id="imgtip" class="clearfloat">
-                    <li><img src="img/enable.jpg"/>可选座位</li>
-                    <li><img src="img/disable.jpg"/>不可选座位</li>
-                    <li><img src="img/mychoose.jpg"/>已选座位</li>
-                </ul>
-                <p class="seattip">
-                    <span>
-                        亲爱的<span th:text="${name}">用户</span>,
-                        <span th:if="${location}">
-                            您的座位为：<span th:text="${location.building}">思学楼</span>
-                            <span th:text="${location.floor}">2</span>楼
-                            <span th:text="${location.row}">3</span>排
-                            <span th:text="${location.number}">34</span>号
-                        </span>
-                        <span th:unless="${location}">
-                            您还没有预订座位哦！
-                        </span>
-                    </span>
-                </p>
-                <p class="fritip"><span>*</span>每人只能选一张票，选票完成后，请按时到场参加活动</p>
-            </div>
-        </div>
-
-</main>
+    </main>
 </body>
-<script src="/js/load.js"></script>
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/load.js"></script>
 </html>

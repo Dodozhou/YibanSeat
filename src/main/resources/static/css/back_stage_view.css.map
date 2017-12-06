@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,MAAM;EACJ,MAAM,EAAC,SAAS;EAChB,SAAE;IACA,MAAM,EAAC,IAAI;IACX,WAAW,EAAC,IAAI;IAChB,SAAS,EAAC,KAAK;IACf,KAAK,EAAE,OAAO;IACd,WAAW,EAAC,GAAG;;AAGnB,EAAE;EACA,KAAK,EAAC,IAAI;EACV,MAAM,EAAC,IAAI;EACX,UAAU,EAAC,cAAc;;AAE3B,IAAI;EACF,UAAU,EAAE,IAAI",
+"sources": ["../scss/back_stage_view.scss"],
+"names": [],
+"file": "back_stage_view.css"
+}

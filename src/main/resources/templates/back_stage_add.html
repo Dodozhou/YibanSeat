@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="keyword" content="抢票系统"/>
+    <meta name="description" content="易班——抢票"/>
+    <link rel="short icon" type="image/x-icon" href="img/logo.ico"/>
+    <title>抢票系统——后台管理</title>
+
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" media="screen" href="css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.css">
+    <link type="text/css" rel="stylesheet" href="css/common.css"/>
+    <link rel="stylesheet" href="css/back_stage_add.css"/>
+</head>
+<body>
+<header>
+    <h1 class="text-center">易抢票—后台管理系统</h1>
+</header>
+<hr/>
+<main>
+    <form class="form-horizontal container" name="backAdd" action="#" method="">
+        <fieldset class="form-group row">
+            <label class="col-md-2" for="activeInput">活动名称</label>
+            <div class="col-md-10">
+                <input class="form-control" type="text" id="activeInput"  placeholder="请输入活动名称" required autofocus/>
+            </div>
+        </fieldset>
+
+        <fieldset class="form-group row">
+            <label class="col-md-2" for="placeSelect">活动地点</label>
+            <div class="col-md-10">
+                <select class="form-control" id="placeSelect">
+                    <option>图书馆报告厅</option>
+                    <option>思学楼A114</option>
+                    <option>艺术大楼演播厅</option>
+                </select>
+            </div>
+        </fieldset>
+
+        <fieldset class="form-group row">
+                <label for="dtp_input" class="col-md-2 control-label">活动时间</label>
+                <div id="dateTime" class=" col-md-10 input-group date form_datetime" data-date="" data-date-format="yyyy-mm-dd hh:ii" data-link-field="dtp_input">
+                    <input class="form-control" size="16" type="text" value="" readonly>
+                    <span class="input-group-addon"><span class="fa fa-times fa-lg"></span></span>
+                    <span class="input-group-addon"><span class="fa fa-calendar fa-lg"></span></span>
+                </div>
+                <input type="hidden" id="dtp_input" value="" /><br/>
+        </fieldset>
+
+        <fieldset class="form-group row">
+            <div class="col-md-offset-10 col-md-2">
+                <input class="btn cancelBtn" type="reset" value="取消"/>
+                <input class="btn btn-primary subBtn"  type="submit" value="确定"/>
+            </div>
+        </fieldset>
+    </form>
+</main>
+<footer>
+
+</footer>
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/bootstrap-datetimepicker.js"></script>
+<script src="js/bootstrap-datetimepicker.fr.js"></script>
+<script>
+    window.onload=function(){
+//     日期时间选择
+        $('.form_datetime').datetimepicker({
+            //language:  'fr',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1
+        });
+
+//    设置默认时间
+        Date.prototype.Format = function (fmt) { //author: meizz
+            var o = {
+                "M+": this.getMonth() + 1, //月份
+                "d+": this.getDate(), //日
+                "h+": this.getHours(), //小时
+                "m+": this.getMinutes(), //分
+                "s+": this.getSeconds(), //秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                "S": this.getMilliseconds() //毫秒
+            };
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        };
+
+        var defaultTime=(new Date()).Format("yyyy-MM-dd hh:mm");
+        var oDateTime=document.getElementById('dateTime');
+        oDateTime.dataDate=defaultTime;
+    }
+</script>
+</body>
+</html>

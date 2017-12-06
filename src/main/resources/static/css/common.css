@@ -1,0 +1,42 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, iframe,
+a,img, ul, li, form, label,
+table,tbody, tfoot, thead, tr, td,
+footer, header{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+footer, header, section {
+    display: block;
+}
+body {
+    font-size: 10px;
+    line-height: 1;
+    color: #494949;
+}
+ol, ul {
+    list-style: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.clearfloat::after{
+    content: '';
+    display: block;
+    clear: both;
+    height:0;
+    overflow: hidden;
+}
+header,main{
+    width:80%;
+    margin:0 auto;
+}
