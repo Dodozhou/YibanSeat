@@ -147,7 +147,6 @@ public class BaseController {
             Seat seat=seats.get(0);
             logger.trace("Id为"+seat.getOwner()+"的用户已经抢过了，座位是"+seat.getSeatNum());
             request.getSession().setAttribute("MySeat",seat.getSeatNum());
-            model.addAttribute("location", SeatUtil.seatNumUtil(seat.getSeatNum()));
         }else {
             logger.trace("Id为"+user1.getId()+"的用户还没有抢过座位");
             request.getSession().setAttribute("MySeat","");

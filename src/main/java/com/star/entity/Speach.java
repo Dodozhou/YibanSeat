@@ -1,5 +1,7 @@
 package com.star.entity;
 
+import java.util.Date;
+
 /**
  * 活动实体.
  * 包含活动相关信息的实体类
@@ -7,10 +9,9 @@ package com.star.entity;
 public class Speach {
     private int id=-1;
     private String title;
-    private String speaker;
     private String description;
     private String place;
-    private String time;
+    private Date time;
 
     public int getId() {
         return id;
@@ -26,14 +27,6 @@ public class Speach {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getSpeaker() {
-        return speaker;
-    }
-
-    public void setSpeaker(String speaker) {
-        this.speaker = speaker;
     }
 
     public String getDescription() {
@@ -52,11 +45,11 @@ public class Speach {
         this.place = place;
     }
 
-    public String getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 }

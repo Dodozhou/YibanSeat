@@ -66,4 +66,7 @@ public interface SeatMapper {
             @Result(property = "seatNum",  column = "seat_num")
     })
     List<Seat> getByOnwer(int owner);
+
+    @Delete("delete from seat where owner=#{owner}")
+    void deleteByOwner(int owner);
 }
