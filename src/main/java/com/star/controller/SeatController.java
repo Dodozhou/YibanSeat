@@ -127,4 +127,14 @@ public class SeatController {
         return schoolId.equals("22017");
     }*/
 
+    /**
+     * 根据owner删除座位记录
+     * @param owner 座位拥有者
+     */
+    @RequestMapping("/deleteSeat")
+    public String deleteSeat(int owner){
+        seatMapper.deleteByOwner(owner);
+        return "back_stage_view";
+    }
+
 }
