@@ -2,6 +2,7 @@ package com.star.controller;
 
 import com.google.gson.Gson;
 import com.star.entity.Seat;
+import com.star.entity.User;
 import com.star.mapper.SeatMapper;
 import com.star.mapper.UserMapper;
 import org.apache.ibatis.annotations.Param;
@@ -129,11 +130,16 @@ public class SeatController {
 
     /**
      * 根据owner删除座位记录
-     * @param owner 座位拥有者
+     * @param yiban_id 座位拥有者的易班id
      */
     @RequestMapping("/deleteSeat")
-    public String deleteSeat(int owner){
-        seatMapper.deleteByOwner(owner);
+    public String deleteSeat(String yiban_id,Model model){
+        List<User> users=userMapper.getByYiBanId(yiban_id);
+        if (users.size()>1 || users.size()<1){
+            model.addAttribute("reason","该用户的账户出错了，请及时联系管理员！");
+            return "fail";
+        }
+        seatMapper.deleteByOwner(users.get(0).getId());
         return "back_stage_view";
     }
 

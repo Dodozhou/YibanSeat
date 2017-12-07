@@ -52,17 +52,17 @@ public class SpeachController {
      */
     @ResponseBody
     @RequestMapping("/getSpeach")
-    public String getSpeach(){
+    public String getSpeach(@RequestParam("callback") String callback){
         Gson gson=new Gson();
         Speach speach=speachMapper.getAll().get(0);
         //为了格式化时间而做的一堆工作
-        SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String formatTime=formatter.format(speach.getTime());
         //将speach转为map，然后用格式化后的日期替换之前的日志
         Map map= MapBeanUtil.beanToMap(speach);
         map.replace("time",formatTime);
         //将map转化为json并返回
-         return gson.toJson(map);
+         return callback+"("+gson.toJson(map)+")";
     }
 
     /**
@@ -71,9 +71,9 @@ public class SpeachController {
      */
     @ResponseBody
     @RequestMapping("/getAllSeatsForManage")
-    public String getAllSeatsForManage(){
+    public String getAllSeatsForManage(@RequestParam("callback") String callback){
         Gson gson=new Gson();
-        return gson.toJson(speachMapper.getAllSeats());
+        return callback+"("+gson.toJson(speachMapper.getAllSeats())+")";
     }
 
 
