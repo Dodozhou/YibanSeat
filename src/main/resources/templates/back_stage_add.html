@@ -6,14 +6,14 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="keyword" content="抢票系统"/>
     <meta name="description" content="易班——抢票"/>
-    <link rel="short icon" type="image/x-icon" href="img/logo.ico"/>
+    <link rel="short icon" type="image/x-icon" href="../static/img/logo.ico"/>
     <title>抢票系统——后台管理</title>
 
-    <link rel="stylesheet" href="css/bootstrap.css"/>
-    <link rel="stylesheet" media="screen" href="css/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.css">
-    <link type="text/css" rel="stylesheet" href="css/common.css"/>
-    <link rel="stylesheet" href="css/back_stage_add.css"/>
+    <link rel="stylesheet" href="../static/css/bootstrap.css"/>
+    <link rel="stylesheet" media="screen" href="../static/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="../static/font-awesome-4.7.0/css/font-awesome.css">
+    <link type="text/css" rel="stylesheet" href="../static/css/common.css"/>
+    <link rel="stylesheet" href="../static/css/back_stage_add.css"/>
 </head>
 <body>
 <header>
@@ -21,18 +21,18 @@
 </header>
 <hr/>
 <main>
-    <form class="form-horizontal container" name="backAdd" action="#" method="">
+    <form class="form-horizontal container" name="backAdd" action="/addSpeach" method="post">
         <fieldset class="form-group row">
             <label class="col-md-2" for="activeInput">活动名称</label>
             <div class="col-md-10">
-                <input class="form-control" type="text" id="activeInput"  placeholder="请输入活动名称" required autofocus/>
+                <input class="form-control" type="text" id="activeInput"  name="title"  placeholder="请输入活动名称" required autofocus/>
             </div>
         </fieldset>
 
         <fieldset class="form-group row">
             <label class="col-md-2" for="placeSelect">活动地点</label>
             <div class="col-md-10">
-                <select class="form-control" id="placeSelect">
+                <select class="form-control" id="placeSelect" name="place">
                     <option>图书馆报告厅</option>
                     <option>思学楼A114</option>
                     <option>艺术大楼演播厅</option>
@@ -43,7 +43,7 @@
         <fieldset class="form-group row">
                 <label for="dtp_input" class="col-md-2 control-label">活动时间</label>
                 <div id="dateTime" class=" col-md-10 input-group date form_datetime" data-date="" data-date-format="yyyy-mm-dd hh:ii" data-link-field="dtp_input">
-                    <input class="form-control" size="16" type="text" value="" readonly>
+                    <input class="form-control" name="time" size="16" type="text" value="" readonly>
                     <span class="input-group-addon"><span class="fa fa-times fa-lg"></span></span>
                     <span class="input-group-addon"><span class="fa fa-calendar fa-lg"></span></span>
                 </div>
@@ -53,18 +53,41 @@
         <fieldset class="form-group row">
             <div class="col-md-offset-10 col-md-2">
                 <input class="btn cancelBtn" type="reset" value="取消"/>
-                <input class="btn btn-primary subBtn"  type="submit" value="确定"/>
+                <input class="btn btn-primary subBtn" data-toggle="modal" data-target="#myModal" type="submit" value="确定"/>
             </div>
         </fieldset>
     </form>
+
+    <!--<button data-toggle="modal" data-target="#myModal">点击</button>-->
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 <footer>
 
 </footer>
-<script src="js/jquery-3.1.1.min.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/bootstrap-datetimepicker.js"></script>
-<script src="js/bootstrap-datetimepicker.fr.js"></script>
+<script src="../static/js/jquery-3.1.1.min.js"></script>
+<script src="../static/js/bootstrap.js"></script>
+<script src="../static/js/bootstrap-datetimepicker.js"></script>
+<script src="../static/js/bootstrap-datetimepicker.fr.js"></script>
 <script>
     window.onload=function(){
 //     日期时间选择
@@ -99,7 +122,14 @@
         var defaultTime=(new Date()).Format("yyyy-MM-dd hh:mm");
         var oDateTime=document.getElementById('dateTime');
         oDateTime.dataDate=defaultTime;
-    }
+    };
+
+    $(function(){
+        $('.subBtn').click(function(e){
+            e.preventDefault();
+
+        })
+    })
 </script>
 </body>
 </html>
