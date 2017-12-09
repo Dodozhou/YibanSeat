@@ -134,7 +134,11 @@ public class SeatController {
      */
     @RequestMapping("/deleteSeat")
     public String deleteSeat(String yiban_id,Model model){
+        logger.debug(yiban_id);
         List<User> users=userMapper.getByYiBanId(yiban_id);
+        for (User user:users) {
+            logger.debug(user.getId()+"   "+user.getName()+"  "+user.getYibanId());
+        }
         if (users.size()>1 || users.size()<1){
             model.addAttribute("reason","该用户的账户出错了，请及时联系管理员！");
             return "fail";

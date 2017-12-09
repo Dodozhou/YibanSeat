@@ -42,7 +42,6 @@
             </table>
         </div>
 
-        <button class="btn btn-primary btn-sm btnView">一键查看</button>
         <button class="btn btn-primary btn-sm btnExport" onclick="tablesToExcel(['backViewTable'], ['ProductDay1'], 'backViewTable.xls', 'Excel')">一键导出</button>
     </main>
 <script src="../static/js/jquery-3.1.1.min.js"></script>
@@ -51,10 +50,7 @@
 <script>
     window.onload=function(){
         var oBackViewTable=document.getElementById('container');
-        var oBtnView=document.getElementsByClassName('btnView')[0];
         var oBtnExport=document.getElementsByClassName('btnExport')[0];
-        oBackViewTable.style.display='none';
-        oBtnExport.style.display='none';
         //解析座位号
         var numArrSeatInfo=[];
         var location='';
@@ -76,28 +72,24 @@
             return seatInfo;
         }
 
-        var $oBtnView=$(oBtnView);
         var $oBtnExport=$(oBtnExport);
         var $oBackViewTable=$(oBackViewTable);
         var $tbodyHtml='';
-        $oBtnView.click(function(){
-            $.ajax({
-                type:'GET',
-                url:'http://www.deardull.com:8080/getAllSeatsForManage',
-                dataType:'jsonp',
-                jsonp:'callback',
-                success:function(data){
-                    $oBtnView.css('display','none');
-                    $.each(data,function(index,indexInfo){
-                        $tbodyHtml+='<tr><th scope="row">'+(index+1)+'</th><td>'+data[index].yiban_id+'</td><td>'+data[index].name+'</td><td>'+seatParse(data[index].seat_num)+'</td><td><form method="post" action="/deleteSeat"><input type="hidden" name="yiban_id" value='+Number(data[index].yiban_id)+' /> <input class="btn-primary" type="submit" value="删除"/></form></td></tr>';
-                    });
-                    $('tbody').html($tbodyHtml);
-                    $oBackViewTable.css('display','block');
-                    $oBtnExport.css('display','block');
-                }
-            })
+        $.ajax({
+            type:'GET',
+            url:'http://www.deardull.com:8080/getAllSeatsForManage',
+            dataType:'jsonp',
+            jsonp:'callback',
+            success:function(data){
+                $.each(data,function(index,indexInfo){
+                    $tbodyHtml+='<tr><th scope="row">'+(index+1)+'</th><td>'+data[index].yiban_id+'</td><td>'+data[index].name+'</td><td>'+seatParse(data[index].seat_num)+'</td><td><form method="post" action="/deleteSeat"><input type="hidden" name="yiban_id" value='+Number(data[index].yiban_id)+' /> <input class="btn-primary" type="submit" value="删除"/></form></td></tr>';
+                });
+                $('tbody').html($tbodyHtml);
+
+            }
         })
- };
+
+    };
 
 
 </script>
