@@ -173,15 +173,16 @@ public class BaseController {
 
             User user=new User(token);
             JsonObject obj=new JsonParser().parse(user.me()).getAsJsonObject();
-            JsonObject info=obj.get("info").getAsJsonObject();
-            String realname=info.get("yb_realname").getAsString();
-            String studentId=info.get("yb_studentid").getAsString();
 
-            logger.trace("User: "+realname+" authorized!");
+            JsonObject info=obj.get("info").getAsJsonObject();
+            String username=info.get("yb_username").getAsString();
+            String yibanId=info.get("yb_userid").getAsString();
+
+            logger.trace("User: "+username+" authorized!");
 
             userMap=new HashMap<>();
-            userMap.put("yibanId",studentId);
-            userMap.put("nickname",realname);
+            userMap.put("yibanId",yibanId);
+            userMap.put("nickname",username);
             request.getSession().setAttribute("userMap",userMap);
             return userMap;
         }
