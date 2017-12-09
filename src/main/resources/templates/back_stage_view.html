@@ -14,49 +14,33 @@
     <link rel="stylesheet" href="../static/font-awesome-4.7.0/css/font-awesome.css">
     <link type="text/css" rel="stylesheet" href="../static/css/common.css"/>
     <link rel="stylesheet" href="../static/css/back_stage_view.css"/>
+    <style>
+        .btnExport{
+            margin-bottom:20px;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1 class="text-center">易抢票—后台管理系统</h1>
+        <h1 class="text-center">易抢票—座位管理</h1>
     </header>
     <hr/>
     <main>
-        <form name="backView" action="#" method="post">
+        <div id="container">
             <table id="backViewTable" class="table table-hover table-sm table2excel">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>易班ID</th>
-                        <th>姓名</th>
-                        <th>座位号</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>1234</td>
-                        <td>李文斐</td>
-                        <td>2楼 3排 34号 </td>
-                        <td><input class="btn-primary" type="button" value="删除"/></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>2345</td>
-                        <td>周成</td>
-                        <td>1楼 3排 34号</td>
-                        <td><input class="btn-primary" type="button" value="删除"/></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>3456</td>
-                        <td>Lee</td>
-                        <td>1楼 3排 12号</td>
-                        <td><input class="btn-primary" type="button" value="删除"/></td>
-                    </tr>
-                    </tbody>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>易班ID</th>
+                    <th>姓名</th>
+                    <th>座位号</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
             </table>
-        </form>
+        </div>
 
         <button class="btn btn-primary btn-sm btnView">一键查看</button>
         <button class="btn btn-primary btn-sm btnExport" onclick="tablesToExcel(['backViewTable'], ['ProductDay1'], 'backViewTable.xls', 'Excel')">一键导出</button>
@@ -65,21 +49,57 @@
 <script src="../static/js/bootstrap.js"></script>
 <script>
     window.onload=function(){
-        var oBackView=document.getElementsByName('backView')[0];
+        var oBackViewTable=document.getElementById('container');
         var oBtnView=document.getElementsByClassName('btnView')[0];
         var oBtnExport=document.getElementsByClassName('btnExport')[0];
-        oBackView.style.display='none';
+        oBackViewTable.style.display='none';
         oBtnExport.style.display='none';
-        oBtnView.onclick=function(){
-            this.style.display='none';
-            oBackView.style.display='block';
-            oBtnExport.style.display='block';
-        };
+        //解析座位号
+        var numArrSeatInfo=[];
+        var location='';
+        var seatInfo;
+        function seatParse(s){
+            seatInfo='';
+            var arrSeatInfo=s.split('_');
+            numArrSeatInfo=arrSeatInfo.map(function(item,index,array){
+                return Number(item);
+            });
+            if(numArrSeatInfo[0]===1){
+                location='图书馆报告厅';
+            }else if(numArrSeatInfo[0]===2){
+                location='思学楼A114';
+            }else if(numArrSeatInfo[0]===3){
+                location='艺术大楼演播厅';
+            }
+            seatInfo+=location+numArrSeatInfo[1]+'楼'+numArrSeatInfo[2]+'排'+numArrSeatInfo[3]+'座';
+            return seatInfo;
+        }
 
+        var $oBtnView=$(oBtnView);
+        var $oBtnExport=$(oBtnExport);
+        var $oBackViewTable=$(oBackViewTable);
+        var $tbodyHtml='';
+        $oBtnView.click(function(){
+            $.ajax({
+                type:'GET',
+                url:'http://www.deardull.com:8080/getAllSeatsForManage',
+                dataType:'jsonp',
+                jsonp:'callback',
+                success:function(data){
+                    $oBtnView.css('display','none');
+                    $.each(data,function(index,indexInfo){
+                        $tbodyHtml+='<tr><th scope="row">'+(index+1)+'</th><td>'+data[index].yiban_id+'</td><td>'+data[index].name+'</td><td>'+seatParse(data[index].seat_num)+'</td><td><form method="post" action="/deleteSeat"> <input type="hidden" name="yiban_id" value='+Number(data[index].yiban_id)+'/> <input class="btn-primary" type="submit" value="删除"/> </form></tr>';
+                    });
+                    $('tbody').html($tbodyHtml);
+                    $oBackViewTable.css('display','block');
+                    $oBtnExport.css('display','block');
+                }
+            })
+        })
 //不能如下调用，加载页面时直接下载Excel
 //      oBtnExport.onclick=tablesToExcel(['backViewTable'], ['ProductDay1'], 'TestBook.xls', 'Excel');
     };
-
+    //导出Excel函数
     var tablesToExcel = (function() {
         var uri = 'data:application/vnd.ms-excel;base64,'
             , tmplWorkbookXML = '<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">'
