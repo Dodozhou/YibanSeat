@@ -226,7 +226,7 @@ window.onload=function(){
             success:function(data){
                $('#titleUl>li:eq(1)').html(data.title);
                $('#titleUl>li:eq(2)').html(data.time);
-               var place=data.id-1;
+               var place=data.id;
                 //切换
                 var arrform=document.getElementsByTagName('form');
                 // var place=0;

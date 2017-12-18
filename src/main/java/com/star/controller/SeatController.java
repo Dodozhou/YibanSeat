@@ -2,8 +2,10 @@ package com.star.controller;
 
 import com.google.gson.Gson;
 import com.star.entity.Seat;
+import com.star.entity.Speach;
 import com.star.entity.User;
 import com.star.mapper.SeatMapper;
+import com.star.mapper.SpeachMapper;
 import com.star.mapper.UserMapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -31,6 +33,7 @@ import java.util.Map;
 public class SeatController {
     private final SeatMapper seatMapper;
     private final UserMapper userMapper;
+    private final SpeachMapper speachMapper;
 
     // Define a static logger variable so that it references the
     // Logger instance named "BaseController".
@@ -42,9 +45,10 @@ public class SeatController {
      * @param userMapper 用户持久化接口
      */
     @Autowired
-    public SeatController(SeatMapper seatMapper, UserMapper userMapper) {
+    public SeatController(SeatMapper seatMapper, UserMapper userMapper,SpeachMapper speachMapper) {
         this.seatMapper = seatMapper;
         this.userMapper = userMapper;
+        this.speachMapper=speachMapper;
     }
 
     /**
@@ -58,7 +62,8 @@ public class SeatController {
         /*response.setHeader("Access-Control-Allow-Credentials","true");
         response.setHeader("Access-Control-Allow-Methods","GET,POST");
         response.setHeader("Access-Control-Allow-Origin","*");*/
-        List<String> seats=seatMapper.getAll();
+        Speach speach=speachMapper.getLastOne();
+        List<String> seats=seatMapper.getBySepach(speach.getId());
         String mySeat=(String)request.getSession().getAttribute("MySeat");
         if (mySeat==null){
             mySeat="";
@@ -102,7 +107,7 @@ public class SeatController {
             model.addAttribute("reason","这个座位刚刚被抢了哦！");
             return "fail";
         }
-        if (seatMapper.getByOwnerAndSpeach(Integer.parseInt(owner),1).size()>0){
+        if (seatMapper.getByOwnerAndSpeach(Integer.parseInt(owner),speachMapper.getLastOne().getId()).size()>0){
             logger.trace("Id为"+Integer.parseInt(owner)+"的用户抢过座位了");
             model.addAttribute("reason","您已经抢过这个活动的座位了哦！");
             return "fail";
@@ -111,7 +116,7 @@ public class SeatController {
         Seat seat=new Seat();
         seat.setOwner(Integer.parseInt(owner));
         seat.setSeatNum(seatNum);
-        seat.setSpeach(1);
+        seat.setSpeach(speachMapper.getLastOne().getId());
         seatMapper.add(seat);
 
         logger.trace("Id为"+Integer.parseInt(owner)+"的用户刚抢到了座位："+seatNum);

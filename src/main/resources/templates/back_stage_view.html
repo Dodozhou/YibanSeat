@@ -85,8 +85,7 @@
                     $tbodyHtml+='<tr><th scope="row">'+(index+1)+'</th><td>'+data[index].yiban_id+'</td><td>'+data[index].name+'</td><td>'+seatParse(data[index].seat_num)+'</td><td><form method="post" action="/deleteSeat"><input type="hidden" name="yiban_id" value='+Number(data[index].yiban_id)+' /> <input class="btn-primary" type="submit" value="删除"/></form></td></tr>';
                 });
                 $('tbody').html($tbodyHtml);
-                $oBackViewTable.css('display','block');
-                $oBtnExport.css('display','block');
+
             }
         })
 

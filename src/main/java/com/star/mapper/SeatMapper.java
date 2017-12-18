@@ -50,11 +50,11 @@ public interface SeatMapper {
      * @param speach 活动id
      * @return 返回满足条件的seatNum列表
      */
-    @Select("select seat_num from seat where owner=#{param1} and speach=#{param2}")
+    @Select("select * from seat where owner=#{param1} and speach=#{param2}")
     @Results({
             @Result(property = "seatNum",  column = "seat_num")
     })
-    List<String> getByOwnerAndSpeach(int owner,int speach);
+    List<Seat> getByOwnerAndSpeach(int owner,int speach);
 
     /**
      * 通过用户id查询座位记录
@@ -69,4 +69,10 @@ public interface SeatMapper {
 
     @Delete("delete from seat where owner=#{owner}")
     void deleteByOwner(int owner);
+
+    @Select("select seat_num from seat where speach=#{speachId}")
+    @Results({
+            @Result(property = "seatNum",  column = "seat_num")
+    })
+    List<String> getBySepach(int speachId);
 }

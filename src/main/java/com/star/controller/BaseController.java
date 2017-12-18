@@ -5,7 +5,9 @@ import cn.yiban.open.common.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.star.entity.Seat;
+import com.star.entity.Speach;
 import com.star.mapper.SeatMapper;
+import com.star.mapper.SpeachMapper;
 import com.star.mapper.UserMapper;
 import com.star.util.SeatUtil;
 
@@ -35,6 +37,7 @@ public class BaseController {
 
     private final UserMapper userMapper;
     private final SeatMapper seatMapper;
+    private final SpeachMapper speachMapper;
 
     // Define a static logger variable so that it references the
     // Logger instance named "BaseController".
@@ -54,9 +57,10 @@ public class BaseController {
      * @param seatMapper 座位持久化接口
      */
     @Autowired
-    public BaseController(UserMapper userMapper, SeatMapper seatMapper) {
+    public BaseController(UserMapper userMapper, SeatMapper seatMapper, SpeachMapper speachMapper) {
         this.userMapper = userMapper;
         this.seatMapper = seatMapper;
+        this.speachMapper=speachMapper;
     }
 
     /**
@@ -138,7 +142,7 @@ public class BaseController {
         model.addAttribute("name",user1.getName());
 
         logger.trace("查询用户"+user1.getName()+",id:"+user1.getId()+"是否抢座");
-        List<Seat> seats=seatMapper.getByOnwer(user1.getId());
+        List<Seat> seats=seatMapper.getByOwnerAndSpeach(user1.getId(),speachMapper.getLastOne().getId());
         if (seats.size()>1){
             logger.error("Id为"+seats.get(0).getOwner()+"的用户抢了两次座位，出错了");
             model.addAttribute("reason","对不起，您的账户出错了，请联系系统管理员！");
