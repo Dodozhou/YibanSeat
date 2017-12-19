@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +48,13 @@ public class BaseController {
     private static final String appSecret="80c54652e5bcc48f83cb53337a4dca04";
     private static final String callbackurl="http://www.deardull.com:8080/autho";
     //private static final String callbackurl="http://localhost:8080/autho";
+
+    private static List<String> authoUser=new LinkedList<>();
+    static {
+        authoUser.add("201531060634");
+        authoUser.add("201531060681");
+        authoUser.add("201531100555");
+    }
 
 
 
@@ -176,11 +184,27 @@ public class BaseController {
             }
 
             User user=new User(token);
-            JsonObject obj=new JsonParser().parse(user.me()).getAsJsonObject();
-
+            //JsonObject obj=new JsonParser().parse(user.me()).getAsJsonObject();
+            JsonObject obj=new JsonParser().parse(user.realme()).getAsJsonObject();
             JsonObject info=obj.get("info").getAsJsonObject();
-            String username=info.get("yb_username").getAsString();
-            String yibanId=info.get("yb_userid").getAsString();
+            //String username=info.get("yb_username").getAsString();
+            String username=info.get("yb_realname").getAsString();
+            logger.trace(username);
+            //String yibanId=info.get("yb_userid").getAsString();
+            String yibanId=info.get("yb_studentid").getAsString();
+            logger.trace(yibanId);
+            //验证用户是否有权限登录后台
+            boolean isAuthed=false;
+            for (String s :authoUser) {
+                if (s.equals(yibanId)){
+                    isAuthed=true;
+                    request.getSession().setAttribute("bsAutho","yes");
+                    break;
+                }
+            }
+            if (!isAuthed){
+                request.getSession().setAttribute("bsAutho","no");
+            }
 
             logger.trace("User: "+username+" authorized!");
 
