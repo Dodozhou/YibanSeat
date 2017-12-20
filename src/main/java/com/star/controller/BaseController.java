@@ -130,7 +130,10 @@ public class BaseController {
         }
 
         Map<String,String> map=getUserInfo(token,request);
+
+        //认证验证
         if (map.get("yibanId")==null || map.get("yibanId").isEmpty()){
+            model.addAttribute("reason","对不起，您的易班账号没有认证，请先进行学校认证！");
             return "fail";
         }
         user1s=userMapper.getByYiBanId(map.get("yibanId"));
@@ -141,7 +144,6 @@ public class BaseController {
         }else if(user1s.size()==0){
             user1=new com.star.entity.User(map.get("nickname"),map.get("yibanId"));
             userMapper.insert(user1);
-            logger.trace("ID为:"+user1.getId()+"的用户注册了");
         }else {
             user1=user1s.get(0);
         }
@@ -149,7 +151,7 @@ public class BaseController {
         model.addAttribute("userId",user1.getId());
         model.addAttribute("name",user1.getName());
 
-        logger.trace("查询用户"+user1.getName()+",id:"+user1.getId()+"是否抢座");
+        //logger.trace("查询用户"+user1.getName()+",id:"+user1.getId()+"是否抢座");
         List<Seat> seats=seatMapper.getByOwnerAndSpeach(user1.getId(),speachMapper.getLastOne().getId());
         if (seats.size()>1){
             logger.error("Id为"+seats.get(0).getOwner()+"的用户抢了两次座位，出错了");
@@ -157,10 +159,10 @@ public class BaseController {
             return "fail";
         }else if (seats.size()==1){
             Seat seat=seats.get(0);
-            logger.trace("Id为"+seat.getOwner()+"的用户已经抢过了，座位是"+seat.getSeatNum());
+            //logger.trace("Id为"+seat.getOwner()+"的用户已经抢过了，座位是"+seat.getSeatNum());
             request.getSession().setAttribute("MySeat",seat.getSeatNum());
         }else {
-            logger.trace("Id为"+user1.getId()+"的用户还没有抢过座位");
+            //logger.trace("Id为"+user1.getId()+"的用户还没有抢过座位");
             request.getSession().setAttribute("MySeat","");
         }
         return "index";
@@ -182,17 +184,16 @@ public class BaseController {
                 userMap= (Map<String, String>) userObj;
                 return userMap;
             }
-
+            userMap=new HashMap<>();
             User user=new User(token);
             //JsonObject obj=new JsonParser().parse(user.me()).getAsJsonObject();
             JsonObject obj=new JsonParser().parse(user.realme()).getAsJsonObject();
+            logger.trace(obj);
             JsonObject info=obj.get("info").getAsJsonObject();
             //String username=info.get("yb_username").getAsString();
             String username=info.get("yb_realname").getAsString();
-            logger.trace(username);
             //String yibanId=info.get("yb_userid").getAsString();
             String yibanId=info.get("yb_studentid").getAsString();
-            logger.trace(yibanId);
             //验证用户是否有权限登录后台
             boolean isAuthed=false;
             for (String s :authoUser) {
@@ -208,7 +209,6 @@ public class BaseController {
 
             logger.trace("User: "+username+" authorized!");
 
-            userMap=new HashMap<>();
             userMap.put("yibanId",yibanId);
             userMap.put("nickname",username);
             request.getSession().setAttribute("userMap",userMap);
