@@ -1,77 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta http-equiv="x-ua-compatible" content="ie=edge"/>
     <meta name="keyword" content="抢票系统"/>
     <meta name="description" content="易班——抢票"/>
-    <link rel="short icon" type="image/x-icon" href="img/logo.ico"/>
+    <link rel="short icon" type="image/x-icon" href="../static/img/logo.ico"/>
     <title>抢票系统——后台管理</title>
 
-    <link rel="stylesheet" href="css/bootstrap.css"/>
-    <link rel="stylesheet" media="screen" href="css/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.css">
-    <link type="text/css" rel="stylesheet" href="css/common.css"/>
-    <link rel="stylesheet" href="css/back_stage_view.css"/>
+    <link rel="stylesheet" href="../static/css/bootstrap.css"/>
+    <link rel="stylesheet" media="screen" href="../static/css/bootstrap-datetimepicker.min.css"/>
+    <link rel="stylesheet" href="../static/font-awesome-4.7.0/css/font-awesome.css"/>
+    <link type="text/css" rel="stylesheet" href="../static/css/common.css"/>
+    <link rel="stylesheet" href="../static/css/back_stage_view.css"/>
+    <style>
+        .btnExport{
+            margin-bottom:20px;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1 class="text-center">易抢票—后台管理系统</h1>
+        <h1 class="text-center">易抢票—座位管理</h1>
     </header>
     <hr/>
     <main>
-        <form name="backView" action="#" method="">
-            <table class="table table-hover table-sm">
+        <div id="container">
+            <table id="backViewTable" class="table table-hover table-sm table2excel">
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>易班ID</th>
+                    <th>学号</th>
                     <th>姓名</th>
                     <th>座位号</th>
                     <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>1234</td>
-                    <td>李文斐</td>
-                    <td>2楼 3排 34号 </td>
-                    <td><input class="btn-primary" type="button" value="删除"/></td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>2345</td>
-                    <td>周成</td>
-                    <td>1楼 3排 34号</td>
-                    <td><input class="btn-primary" type="button" value="删除"/></td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>3456</td>
-                    <td>Lee</td>
-                    <td>1楼 3排 12号</td>
-                    <td><input class="btn-primary" type="button" value="删除"/></td>
-                </tr>
                 </tbody>
             </table>
-        </form>
+        </div>
 
-        <button class="btn btn-primary btn-sm btnView">一键查看</button>
+        <button class="btn btn-primary btn-sm btnExport" onclick="tablesToExcel(['backViewTable'], ['ProductDay1'], 'backViewTable.xls', 'Excel')">一键导出</button>
     </main>
-<script src="js/jquery-3.1.1.min.js"></script>
-<script src="js/bootstrap.js"></script>
+<script src="../static/js/jquery-3.1.1.min.js"></script>
+<script src="../static/js/bootstrap.js"></script>
+<script src="../static/js/back_stage_view_export.js"></script>
 <script>
     window.onload=function(){
-        var oBackView=document.getElementsByName('backView')[0];
-        var oBtnView=document.getElementsByClassName('btnView')[0];
-//        oBackView.style.display='none';
-        oBtnView.onclick=function(){
-            oBackView.style.display='block';
+        var oBackViewTable=document.getElementById('container');
+        var oBtnExport=document.getElementsByClassName('btnExport')[0];
+        //解析座位号
+        var numArrSeatInfo=[];
+        var location='';
+        var seatInfo;
+        function seatParse(s){
+            seatInfo='';
+            var arrSeatInfo=s.split('_');
+            numArrSeatInfo=arrSeatInfo.map(function(item,index,array){
+                return Number(item);
+            });
+            if(numArrSeatInfo[0]===1){
+                location='图书馆报告厅';
+            }else if(numArrSeatInfo[0]===2){
+                location='思学楼A114';
+            }else if(numArrSeatInfo[0]===3){
+                location='艺术大楼演播厅';
+            }
+            seatInfo+=location+numArrSeatInfo[1]+'楼'+numArrSeatInfo[2]+'排'+numArrSeatInfo[3]+'座';
+            return seatInfo;
         }
 
-    }
+        var $oBtnExport=$(oBtnExport);
+        var $oBackViewTable=$(oBackViewTable);
+        var $tbodyHtml='';
+        $.ajax({
+            type:'GET',
+            url:'http://www.deardull.com:8080/getAllSeatsForManage',
+            dataType:'jsonp',
+            jsonp:'callback',
+            success:function(data){
+                $.each(data,function(index,indexInfo){
+                    $tbodyHtml+='<tr><th scope="row">'+(index+1)+'</th><td>'+data[index].yiban_id+'</td><td>'+data[index].name+'</td><td>'+seatParse(data[index].seat_num)+'</td><td><form method="post" action="/deleteSeat"><input type="hidden" name="yiban_id" value="'+Number(data[index].yiban_id)+'"/> <input class="btn-primary" type="submit" value="删除"/></form></td></tr>';
+                });
+                $('tbody').html($tbodyHtml);
+
+            }
+        })
+
+    };
+
 
 </script>
 </body>

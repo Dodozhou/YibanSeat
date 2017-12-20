@@ -154,3 +154,14 @@ hr{
 .fritip>span{
     padding-right:3px;
 }
+.backManage{
+    width:80%;
+    margin:15px auto;
+}
+.backManage>a{
+    text-decoration: none;
+    color: #ff6e68;
+}
+.backManage>a:hover{
+    border-bottom:1px solid #ff6e68;
+}

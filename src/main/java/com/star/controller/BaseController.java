@@ -5,7 +5,9 @@ import cn.yiban.open.common.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.star.entity.Seat;
+import com.star.entity.Speach;
 import com.star.mapper.SeatMapper;
+import com.star.mapper.SpeachMapper;
 import com.star.mapper.UserMapper;
 import com.star.util.SeatUtil;
 
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +38,7 @@ public class BaseController {
 
     private final UserMapper userMapper;
     private final SeatMapper seatMapper;
+    private final SpeachMapper speachMapper;
 
     // Define a static logger variable so that it references the
     // Logger instance named "BaseController".
@@ -45,6 +49,13 @@ public class BaseController {
     private static final String callbackurl="http://www.deardull.com:8080/autho";
     //private static final String callbackurl="http://localhost:8080/autho";
 
+    private static List<String> authoUser=new LinkedList<>();
+    static {
+        authoUser.add("201531060634");
+        authoUser.add("201531060681");
+        authoUser.add("201531100555");
+    }
+
 
 
 
@@ -54,9 +65,10 @@ public class BaseController {
      * @param seatMapper 座位持久化接口
      */
     @Autowired
-    public BaseController(UserMapper userMapper, SeatMapper seatMapper) {
+    public BaseController(UserMapper userMapper, SeatMapper seatMapper, SpeachMapper speachMapper) {
         this.userMapper = userMapper;
         this.seatMapper = seatMapper;
+        this.speachMapper=speachMapper;
     }
 
     /**
@@ -118,7 +130,10 @@ public class BaseController {
         }
 
         Map<String,String> map=getUserInfo(token,request);
+
+        //认证验证
         if (map.get("yibanId")==null || map.get("yibanId").isEmpty()){
+            model.addAttribute("reason","对不起，您的易班账号没有认证，请先进行学校认证！");
             return "fail";
         }
         user1s=userMapper.getByYiBanId(map.get("yibanId"));
@@ -129,7 +144,6 @@ public class BaseController {
         }else if(user1s.size()==0){
             user1=new com.star.entity.User(map.get("nickname"),map.get("yibanId"));
             userMapper.insert(user1);
-            logger.trace("ID为:"+user1.getId()+"的用户注册了");
         }else {
             user1=user1s.get(0);
         }
@@ -137,19 +151,18 @@ public class BaseController {
         model.addAttribute("userId",user1.getId());
         model.addAttribute("name",user1.getName());
 
-        logger.trace("查询用户"+user1.getName()+",id:"+user1.getId()+"是否抢座");
-        List<Seat> seats=seatMapper.getByOnwer(user1.getId());
+        //logger.trace("查询用户"+user1.getName()+",id:"+user1.getId()+"是否抢座");
+        List<Seat> seats=seatMapper.getByOwnerAndSpeach(user1.getId(),speachMapper.getLastOne().getId());
         if (seats.size()>1){
             logger.error("Id为"+seats.get(0).getOwner()+"的用户抢了两次座位，出错了");
             model.addAttribute("reason","对不起，您的账户出错了，请联系系统管理员！");
             return "fail";
         }else if (seats.size()==1){
             Seat seat=seats.get(0);
-            logger.trace("Id为"+seat.getOwner()+"的用户已经抢过了，座位是"+seat.getSeatNum());
+            //logger.trace("Id为"+seat.getOwner()+"的用户已经抢过了，座位是"+seat.getSeatNum());
             request.getSession().setAttribute("MySeat",seat.getSeatNum());
-            model.addAttribute("location", SeatUtil.seatNumUtil(seat.getSeatNum()));
         }else {
-            logger.trace("Id为"+user1.getId()+"的用户还没有抢过座位");
+            //logger.trace("Id为"+user1.getId()+"的用户还没有抢过座位");
             request.getSession().setAttribute("MySeat","");
         }
         return "index";
@@ -171,18 +184,33 @@ public class BaseController {
                 userMap= (Map<String, String>) userObj;
                 return userMap;
             }
-
-            User user=new User(token);
-            JsonObject obj=new JsonParser().parse(user.me()).getAsJsonObject();
-            JsonObject info=obj.get("info").getAsJsonObject();
-            String nickname=info.get("yb_usernick").getAsString();
-            String yibanId=info.get("yb_userid").getAsString();
-
-            logger.trace("User: "+nickname+" authorized!");
-
             userMap=new HashMap<>();
+            User user=new User(token);
+            //JsonObject obj=new JsonParser().parse(user.me()).getAsJsonObject();
+            JsonObject obj=new JsonParser().parse(user.realme()).getAsJsonObject();
+            logger.trace(obj);
+            JsonObject info=obj.get("info").getAsJsonObject();
+            //String username=info.get("yb_username").getAsString();
+            String username=info.get("yb_realname").getAsString();
+            //String yibanId=info.get("yb_userid").getAsString();
+            String yibanId=info.get("yb_studentid").getAsString();
+            //验证用户是否有权限登录后台
+            boolean isAuthed=false;
+            for (String s :authoUser) {
+                if (s.equals(yibanId)){
+                    isAuthed=true;
+                    request.getSession().setAttribute("bsAutho","yes");
+                    break;
+                }
+            }
+            if (!isAuthed){
+                request.getSession().setAttribute("bsAutho","no");
+            }
+
+            logger.trace("User: "+username+" authorized!");
+
             userMap.put("yibanId",yibanId);
-            userMap.put("nickname",nickname);
+            userMap.put("nickname",username);
             request.getSession().setAttribute("userMap",userMap);
             return userMap;
         }
