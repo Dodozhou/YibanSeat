@@ -31,4 +31,10 @@ public interface SpeachMapper {
     @Select("select * from speach order by id desc limit 1")
     Speach getLastOne();
 
+    @Select("select student_id from bs_auth")
+    List<String> getAuthers();
+
+    /*@Insert("insert into bs_auth(student_id) values(#{student_id})")
+    void addAuther(String student_id);*/
+
 }

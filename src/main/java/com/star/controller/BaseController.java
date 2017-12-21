@@ -49,14 +49,6 @@ public class BaseController {
     private static final String callbackurl="http://www.deardull.com:8080/autho";
     //private static final String callbackurl="http://localhost:8080/autho";
 
-    private static List<String> authoUser=new LinkedList<>();
-    static {
-        authoUser.add("201531060634");
-        authoUser.add("201531060681");
-        authoUser.add("201531100555");
-    }
-
-
 
 
     /**
@@ -195,6 +187,7 @@ public class BaseController {
             //String yibanId=info.get("yb_userid").getAsString();
             String yibanId=info.get("yb_studentid").getAsString();
             //验证用户是否有权限登录后台
+            List<String> authoUser=speachMapper.getAuthers();
             boolean isAuthed=false;
             for (String s :authoUser) {
                 if (s.equals(yibanId)){

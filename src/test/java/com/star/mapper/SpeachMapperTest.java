@@ -1,5 +1,6 @@
 package com.star.mapper;
 
+import com.star.entity.Seat;
 import com.star.entity.Speach;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
@@ -24,7 +26,23 @@ public class SpeachMapperTest {
         }
         assertNotNull(speaches);
     }
- /*
+    /*
+    @Test
+    public void getAuthers(){
+       List<String> authers=speachMapper.getAuthers();
+        for (String s : authers) {
+            System.out.println(s);
+        }
+    }
+
+    @Test
+    public void getCurrentSeats(){
+       List<Map> seats=speachMapper.getCurrentSeats(1);
+        for (Map map :seats) {
+            System.out.println(map);
+        }
+    }
+
     @Test
     public void add() throws Exception {
         Speach speach=new Speach();
@@ -48,6 +66,15 @@ public class SpeachMapperTest {
        speachMapper.update(speach);
 
    }
-   */
+
+    @Test
+    public void getLastOne(){
+    Speach speach=speachMapper.getLastOne();
+    assertNotNull(speach);
+    System.out.println(speach.getDescription());
+    System.out.println(speach.getPlace());
+
+ }
+ */
 
 }

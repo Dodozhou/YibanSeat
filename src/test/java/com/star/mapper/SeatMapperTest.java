@@ -1,6 +1,7 @@
 package com.star.mapper;
 
 import com.star.entity.Seat;
+import com.star.entity.Speach;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +30,14 @@ public class SeatMapperTest {
         System.out.println(seats);
         assertNotNull(seats);
     }
+
+    @Test
+    public void getBySpeach(){
+        List<String> seats=seatMapper.getBySepach(2);
+        for (String s:seats){
+            System.out.println(s);
+        }
+    }
 /*
     @Test
     public void add() throws Exception {
@@ -47,14 +56,6 @@ public class SeatMapperTest {
         System.out.println(ids);
         assertNotNull(ids);
     }
-
-    @Test
-    public void getByOwnerAndSpeach() throws Exception {
-        List<String> strings=seatMapper.getByOwnerAndSpeach(19,1);
-        System.out.println(strings);
-        assertNotNull(strings);
-    }
-
     @Test
     public void getByOnwer() throws Exception {
         List<Seat> seats=seatMapper.getByOnwer(19);
@@ -69,5 +70,14 @@ public class SeatMapperTest {
     public void deleteByOwner(){
         seatMapper.deleteByOwner(19);
     }
-*/
+
+@Test
+    public void getByOwnerAndSpeach() throws Exception {
+        List<Seat> seats=seatMapper.getByOwnerAndSpeach(19,1);
+        for (Seat s :seats) {
+            System.out.println(s.getSeatNum());
+        }
+        assertNotNull(seats);
+    }
+    */
 }
