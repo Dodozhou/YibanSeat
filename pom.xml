@@ -75,9 +75,11 @@
 		</dependency>
 
 		<dependency>
-			<groupId>yiban</groupId>
+			<groupId>YBOpenApi</groupId>
 			<artifactId>YBOpenApi</artifactId>
 			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/YBOpenApi-1.0.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -91,20 +93,6 @@
 			<artifactId>gson</artifactId>
 		</dependency>
 		<!--+++++++++++++-->
-
-
-
-		<!--++++++HttpUnit Web测试+++++++-->
-		<!--<dependency>
-			<groupId>httpunit</groupId>
-			<artifactId>httpunit</artifactId>
-			<version>1.7</version>
-		</dependency>
-		<dependency>
-			<groupId>rhino</groupId>
-			<artifactId>rhino</artifactId>
-			<version>1.5R4.1</version>
-		</dependency>-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -131,6 +119,15 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<targetPath>lib/</targetPath>
+				<directory>lib/</directory>
+				<includes>
+					<include>**/*.jar</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 
 
