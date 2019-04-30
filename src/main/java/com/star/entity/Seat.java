@@ -1,5 +1,7 @@
 package com.star.entity;
 
+import java.io.Serializable;
+
 /**
  * 座位实体类.
  * 包含座位的信息:<br>
@@ -8,19 +10,12 @@ package com.star.entity;
  *     owner:用户 <br>
  *     speach:活动Id <br>
  */
-public class Seat {
-    private int id;
-    private String seatNum;
-    private int owner;
-    private int speach;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+public class Seat implements Serializable {
+    private String seatNum; //座位编号
+    private int owner; //座位预定者
+    private int speach; //讲座ID
+    private boolean signed; //是否签到
+    private static final long serialVersionUID = 2633583546876721484L;
 
     public String getSeatNum() {
         return seatNum;
@@ -44,5 +39,13 @@ public class Seat {
 
     public void setSpeach(int speach) {
         this.speach = speach;
+    }
+
+    public boolean isSigned() {
+        return signed;
+    }
+
+    public void setSigned(boolean signed) {
+        this.signed = signed;
     }
 }

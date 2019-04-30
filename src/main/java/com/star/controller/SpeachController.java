@@ -3,8 +3,10 @@ package com.star.controller;
 import com.google.gson.Gson;
 import com.star.entity.Speach;
 import com.star.mapper.SpeachMapper;
+import com.star.service.SpeachService;
 import com.star.util.MapBeanUtil;
 import javafx.scene.input.DataFormat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,11 +21,8 @@ import java.util.Map;
 
 @Controller
 public class SpeachController {
-    private final SpeachMapper speachMapper;
-
-    public SpeachController(SpeachMapper speachMapper) {
-        this.speachMapper = speachMapper;
-    }
+    @Autowired
+    private SpeachService speachService;
 
     /**
      * 更新活动。
@@ -45,7 +44,7 @@ public class SpeachController {
         speach.setTime(date);
 
         speach.setDescription(title);
-        speachMapper.add(speach);
+        speachService.add(speach);
         return "redirect:/index";
     }
 
@@ -59,7 +58,7 @@ public class SpeachController {
     @RequestMapping("/getSpeach")
     public String getSpeach(@RequestParam("callback") String callback){
         Gson gson=new Gson();
-        Speach speach=speachMapper.getLastOne();
+        Speach speach=speachService.getLastOne();
         switch (speach.getPlace()){
             case "图书馆报告厅":
                 speach.setPlace("0");
@@ -89,8 +88,8 @@ public class SpeachController {
     @RequestMapping("/getAllSeatsForManage")
     public String getAllSeatsForManage(@RequestParam("callback") String callback){
         Gson gson=new Gson();
-        int speachId=speachMapper.getLastOne().getId();
-        return callback+"("+gson.toJson(speachMapper.getCurrentSeats(speachId))+")";
+        int speachId=speachService.getLastOne().getId();
+        return callback+"("+gson.toJson(speachService.getCurrentSeats(speachId))+")";
     }
 
 

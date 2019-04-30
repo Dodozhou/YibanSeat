@@ -25,7 +25,7 @@ public interface SpeachMapper {
    /* @Update("update speach set title=#{title}, description=#{description},place=#{place},time=#{time} where id=#{id}")
     void update(Speach speach);*/
 
-    @Select("select u.yiban_id,u.name,s.seat_num from user u,seat s where u.id=s.owner and s.speach=#{speachId}")
+    @Select("select u.yiban_id,u.name,s.seat_num,s.signed from user u,seat s where u.id=s.owner and s.speach=#{speachId}")
     List<Map> getCurrentSeats(int speachId);
 
     @Select("select * from speach order by id desc limit 1")

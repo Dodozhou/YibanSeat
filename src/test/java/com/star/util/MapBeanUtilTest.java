@@ -1,6 +1,7 @@
 package com.star.util;
 
 import com.star.entity.Speach;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Date;
@@ -8,6 +9,7 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
+@Ignore
 public class MapBeanUtilTest {
     @Test
     public void beanToMap() throws Exception {

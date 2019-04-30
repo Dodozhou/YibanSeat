@@ -1,17 +1,19 @@
 package com.star.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 活动实体.
  * 包含活动相关信息的实体类
  */
-public class Speach {
+public class Speach implements Serializable {
     private int id=-1;
     private String title;
     private String description;
     private String place;
     private Date time;
+    private static final long serialVersionUID = 2663283546876721484L;
 
     public int getId() {
         return id;

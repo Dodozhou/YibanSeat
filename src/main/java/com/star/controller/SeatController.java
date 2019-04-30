@@ -7,6 +7,9 @@ import com.star.entity.User;
 import com.star.mapper.SeatMapper;
 import com.star.mapper.SpeachMapper;
 import com.star.mapper.UserMapper;
+import com.star.service.SeatService;
+import com.star.service.SpeachService;
+import com.star.service.UserService;
 import org.apache.ibatis.annotations.Param;
 
 
@@ -31,25 +34,17 @@ import java.util.Map;
  */
 @Controller
 public class SeatController {
-    private final SeatMapper seatMapper;
-    private final UserMapper userMapper;
-    private final SpeachMapper speachMapper;
+    @Autowired
+    private SeatService seatService;
+    @Autowired
+    private SpeachService speachService;
+    @Autowired
+    private UserService userService;
 
     // Define a static logger variable so that it references the
     // Logger instance named "BaseController".
     private static final Logger logger= LogManager.getLogger(SeatController.class);
 
-    /**
-     * 注入参数的构造器
-     * @param seatMapper 座位持久化接口
-     * @param userMapper 用户持久化接口
-     */
-    @Autowired
-    public SeatController(SeatMapper seatMapper, UserMapper userMapper,SpeachMapper speachMapper) {
-        this.seatMapper = seatMapper;
-        this.userMapper = userMapper;
-        this.speachMapper=speachMapper;
-    }
 
     /**
      * 获取所有座位信息的接口.
@@ -59,11 +54,8 @@ public class SeatController {
     @ResponseBody
     @RequestMapping("/getSeats")
     public List<String> getSeats(HttpServletRequest request){
-        /*response.setHeader("Access-Control-Allow-Credentials","true");
-        response.setHeader("Access-Control-Allow-Methods","GET,POST");
-        response.setHeader("Access-Control-Allow-Origin","*");*/
-        Speach speach=speachMapper.getLastOne();
-        List<String> seats=seatMapper.getBySepach(speach.getId());
+        Speach speach=speachService.getLastOne();
+        List<String> seats=seatService.getSeatsBySpeach(speach.getId());
         String mySeat=(String)request.getSession().getAttribute("MySeat");
         if (mySeat==null){
             mySeat="";
@@ -95,31 +87,34 @@ public class SeatController {
      * @return "redirect:/index" 重定向至首页；"fail" 抢座失败，转向错误页面
      */
     @RequestMapping("/graspSeat")
-    public String graspSeats(@RequestParam(value = "seat",required = false) String seatNum,
-                             @RequestParam(value = "owner",required = false) String owner, Model model){
+    public String graspSeats(@RequestParam(value = "seat") String seatNum,
+                             @RequestParam(value = "owner") Integer owner, Model model){
 
-        if (seatNum==null || seatNum.isEmpty() || owner==null || owner.isEmpty()){
+        if (seatNum==null || seatNum.isEmpty() || owner==null){
             model.addAttribute("reason","出错啦，请返回主页刷新重试！");
             return "fail";
         }
-        //不光要验证座位是否空余，还要验证该用户是否已经选了座位了！！！！！！
-        if (seatMapper.getBySeatNum(seatNum).size()>0){
-            model.addAttribute("reason","这个座位刚刚被抢了哦！");
-            return "fail";
-        }
-        if (seatMapper.getByOwnerAndSpeach(Integer.parseInt(owner),speachMapper.getLastOne().getId()).size()>0){
-            logger.trace("Id为"+Integer.parseInt(owner)+"的用户抢过座位了");
+
+        //验证该用户是否已经选了座位
+        if (seatService.getByOwnerAndSpeach(owner,speachService.getLastOne().getId()).size()>0){
+            logger.trace("Id为"+owner+"的用户抢过座位了");
             model.addAttribute("reason","您已经抢过这个活动的座位了哦！");
             return "fail";
         }
 
-        Seat seat=new Seat();
-        seat.setOwner(Integer.parseInt(owner));
-        seat.setSeatNum(seatNum);
-        seat.setSpeach(speachMapper.getLastOne().getId());
-        seatMapper.add(seat);
+        //验证座位是否被抢
+        if (seatService.getCountBySeatNumAndSpeach(seatNum,speachService.getLastOne().getId())>0){
+            model.addAttribute("reason","这个座位刚刚被抢了哦！");
+            return "fail";
+        }
 
-        logger.trace("Id为"+Integer.parseInt(owner)+"的用户刚抢到了座位："+seatNum);
+        Seat seat=new Seat();
+        seat.setOwner(owner);
+        seat.setSeatNum(seatNum);
+        seat.setSpeach(speachService.getLastOne().getId());
+        seatService.add(seat);
+
+        logger.trace("Id为"+owner+"的用户刚抢到了座位："+seatNum);
 
         return "redirect:/index";
     }
@@ -140,7 +135,7 @@ public class SeatController {
     @RequestMapping("/deleteSeat")
     public String deleteSeat(String yiban_id,Model model){
         logger.debug(yiban_id);
-        List<User> users=userMapper.getByYiBanId(yiban_id);
+        List<User> users=userService.getByYiBanId(yiban_id);
         for (User user:users) {
             logger.debug(user.getId()+"   "+user.getName()+"  "+user.getYibanId());
         }
@@ -148,7 +143,7 @@ public class SeatController {
             model.addAttribute("reason","该用户的账户出错了，请及时联系管理员！");
             return "fail";
         }
-        seatMapper.deleteByOwner(users.get(0).getId());
+        seatService.deleteByOwner(users.get(0).getId(),speachService.getLastOne().getId());
         return "back_stage_view";
     }
 

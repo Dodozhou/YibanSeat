@@ -9,12 +9,16 @@ import com.star.entity.Speach;
 import com.star.mapper.SeatMapper;
 import com.star.mapper.SpeachMapper;
 import com.star.mapper.UserMapper;
+import com.star.service.SeatService;
+import com.star.service.SpeachService;
+import com.star.service.UserService;
 import com.star.util.SeatUtil;
 
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -35,13 +38,13 @@ import java.util.Map;
  */
 @Controller
 public class BaseController {
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private SeatService seatService;
+    @Autowired
+    private SpeachService speachService;
 
-    private final UserMapper userMapper;
-    private final SeatMapper seatMapper;
-    private final SpeachMapper speachMapper;
-
-    // Define a static logger variable so that it references the
-    // Logger instance named "BaseController".
     private static final Logger logger= LogManager.getLogger(BaseController.class);
 
     private static final String appKey="f48cc159a0d4f1c7";
@@ -49,27 +52,14 @@ public class BaseController {
     private static final String callbackurl="http://www.deardull.com:8080/autho";
     //private static final String callbackurl="http://localhost:8080/autho";
 
-    private static List<String> authoUser=new LinkedList<>();
+    @Value("#{'${auth.user}'.split(',')}")
+    private String[] authoUser;
+    /*private static List<String> authoUser=new LinkedList<>();
     static {
         authoUser.add("201531060634");
         authoUser.add("201531060681");
         authoUser.add("201531100555");
-    }
-
-
-
-
-    /**
-     *
-     * @param userMapper 用户持久化接口
-     * @param seatMapper 座位持久化接口
-     */
-    @Autowired
-    public BaseController(UserMapper userMapper, SeatMapper seatMapper, SpeachMapper speachMapper) {
-        this.userMapper = userMapper;
-        this.seatMapper = seatMapper;
-        this.speachMapper=speachMapper;
-    }
+    }*/
 
     /**
      * 对路径"/autho2"的映射.
@@ -136,14 +126,14 @@ public class BaseController {
             model.addAttribute("reason","对不起，您的易班账号没有认证，请先进行学校认证！");
             return "fail";
         }
-        user1s=userMapper.getByYiBanId(map.get("yibanId"));
+        user1s=userService.getByYiBanId(map.get("yibanId"));
         if (user1s.size()>1){
             logger.error("Id为"+user1s.get(0).getId()+"的用户注册了两次，出错了");
             model.addAttribute("reason","对不起，您的账户出错了，请联系系统管理员！");
             return "fail";
         }else if(user1s.size()==0){
             user1=new com.star.entity.User(map.get("nickname"),map.get("yibanId"));
-            userMapper.insert(user1);
+            userService.insert(user1);
         }else {
             user1=user1s.get(0);
         }
@@ -152,7 +142,7 @@ public class BaseController {
         model.addAttribute("name",user1.getName());
 
         //logger.trace("查询用户"+user1.getName()+",id:"+user1.getId()+"是否抢座");
-        List<Seat> seats=seatMapper.getByOwnerAndSpeach(user1.getId(),speachMapper.getLastOne().getId());
+        List<Seat> seats=seatService.getByOwnerAndSpeach(user1.getId(),speachService.getLastOne().getId());
         if (seats.size()>1){
             logger.error("Id为"+seats.get(0).getOwner()+"的用户抢了两次座位，出错了");
             model.addAttribute("reason","对不起，您的账户出错了，请联系系统管理员！");

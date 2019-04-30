@@ -3,6 +3,7 @@ package com.star.mapper;
 import com.star.entity.Seat;
 
 import org.apache.ibatis.annotations.*;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,35 +15,35 @@ import java.util.List;
 @Component
 @Mapper
 public interface SeatMapper {
-    /**
+    /*
      * 获取所有座位记录.
      * @return 返回一个包含所有座位记录的List
-     */
+
     @Select("select seat_num from seat")
     @Results({
             @Result(property = "seatNum",  column = "seat_num")
     })
     List<String> getAll();
+     */
+
 
     /**
      * 插入一个座位记录.
-     * “@Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")”注解可以使得插入操作返回主键。
      * @param seat 要插入的座位实体
      */
     @Insert("insert into seat(seat_num,owner,speach) values(#{seatNum},#{owner},#{speach})")
     @Results({
             @Result(property = "seatNum",  column = "seat_num")
     })
-    @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
     void add(Seat seat);
 
     /**
-     * 通过SeatNum（座位编号）查询座位记录
+     * 通过SeatNum（座位编号）查询座位记录的条数
      * @param seatNum 座位编号
-     * @return 返回seatNuM等于传入参数的记录的id列表
+     * @return 返回seatNum在本次活动中的记录条数
      */
-    @Select("select id from seat where seat_num=#{seatNum}")
-    List<Integer> getBySeatNum(String seatNum);
+    @Select("select count(*) from seat where seat_num=#{seatNum} and speach=#{speachId}")
+    Integer getCountBySeatNumAndSpeach(String seatNum,int speachId);
 
     /**
      * 通过用户id和活动id查询记录
@@ -60,15 +61,15 @@ public interface SeatMapper {
      * 通过用户id查询座位记录
      * @param owner 用户id
      * @return 返回符合条件的Seat实体
-     */
+     *//*
     @Select("select * from seat where owner=#{owner}")
     @Results({
             @Result(property = "seatNum",  column = "seat_num")
     })
-    List<Seat> getByOnwer(int owner);
+    List<Seat> getByOnwer(int owner);*/
 
-    @Delete("delete from seat where owner=#{owner}")
-    void deleteByOwner(int owner);
+    @Delete("delete from seat where owner=#{owner} and speach=#{speachId}")
+    void deleteByOwner(int owner, int speachId);
 
     @Select("select seat_num from seat where speach=#{speachId}")
     @Results({
