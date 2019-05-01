@@ -141,7 +141,6 @@ public class BaseController {
         model.addAttribute("userId",user1.getId());
         model.addAttribute("name",user1.getName());
 
-        //logger.trace("查询用户"+user1.getName()+",id:"+user1.getId()+"是否抢座");
         List<Seat> seats=seatService.getByOwnerAndSpeach(user1.getId(),speachService.getLastOne().getId());
         if (seats.size()>1){
             logger.error("Id为"+seats.get(0).getOwner()+"的用户抢了两次座位，出错了");
@@ -149,10 +148,9 @@ public class BaseController {
             return "fail";
         }else if (seats.size()==1){
             Seat seat=seats.get(0);
-            //logger.trace("Id为"+seat.getOwner()+"的用户已经抢过了，座位是"+seat.getSeatNum());
             request.getSession().setAttribute("MySeat",seat.getSeatNum());
+            model.addAttribute("hasSeat","yes");
         }else {
-            //logger.trace("Id为"+user1.getId()+"的用户还没有抢过座位");
             request.getSession().setAttribute("MySeat","");
         }
         return "index";

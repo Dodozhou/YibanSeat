@@ -51,3 +51,14 @@ main{
 #imgdiv>img{
     width:50%;
 }
+
+.backManage{
+    margin: 0 auto;
+}
+.backManage>a{
+    text-decoration: none;
+    color: #ff6e68;
+}
+.backManage>a:hover{
+    border-bottom:1px solid #ff6e68;
+}

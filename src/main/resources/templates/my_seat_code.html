@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link type="text/css" rel="stylesheet" href="../static/css/upload_error.css"/>
+    <link href="../static/img/logo.ico" rel="shortcut icon" />
+    <title>易抢票——座位码</title>
+</head>
+<body>
+<main>
+    <div id="container">
+        <div id="imgdiv">
+            <img th:src="@{'data:image/jpeg;base64,'+${myQRCode}}"/>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="backManage">
+        <a th:href="@{/}">返回主页</a>
+    </div>
+</main>
+</body>
+</html>

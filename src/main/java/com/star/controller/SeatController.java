@@ -1,6 +1,7 @@
 package com.star.controller;
 
 import com.google.gson.Gson;
+import com.google.zxing.WriterException;
 import com.star.entity.Seat;
 import com.star.entity.Speach;
 import com.star.entity.User;
@@ -10,12 +11,15 @@ import com.star.mapper.UserMapper;
 import com.star.service.SeatService;
 import com.star.service.SpeachService;
 import com.star.service.UserService;
+import com.star.util.AESUtil;
+import com.star.util.QrCodeCreateUtil;
 import org.apache.ibatis.annotations.Param;
 
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +27,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.soap.SAAJResult;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +46,8 @@ public class SeatController {
     private SpeachService speachService;
     @Autowired
     private UserService userService;
+    @Value("${aes.passwd}")
+    private  String AESPassWd;
 
     // Define a static logger variable so that it references the
     // Logger instance named "BaseController".
@@ -63,20 +71,6 @@ public class SeatController {
         seats.add(mySeat);
         return seats;
     }
-
-   /* @ResponseBody
-    @RequestMapping("/getMySeat")
-    public String getMySeatSuccess(@RequestParam("callback") String callback, HttpServletRequest request){
-        Gson gson=new Gson();
-        String mySeat=(String)request.getSession().getAttribute("MySeat");
-        if (mySeat==null){
-            mySeat="";
-        }
-        if (callback==null || callback.isEmpty()){
-            return gson.toJson(mySeat);
-        }else
-        return callback+"("+gson.toJson(mySeat)+")";
-    }*/
 
     /**
      * 抢座接口.
@@ -119,14 +113,7 @@ public class SeatController {
         return "redirect:/index";
     }
 
-    //鉴定是否是西南石油大学的学生
-    /*private static boolean isXiYou(String token){
-        User user=new User(token);
-        JsonObject obj=new JsonParser().parse(user.me()).getAsJsonObject();
-        JsonObject info=obj.get("info").getAsJsonObject();
-        String schoolId=info.get("yb_schoolid").getAsString();
-        return schoolId.equals("22017");
-    }*/
+
 
     /**
      * 根据owner删除座位记录
@@ -140,11 +127,42 @@ public class SeatController {
             logger.debug(user.getId()+"   "+user.getName()+"  "+user.getYibanId());
         }
         if (users.size()>1 || users.size()<1){
-            model.addAttribute("reason","该用户的账户出错了，请及时联系管理员！");
+            model.addAttribute("reason","您的账户出错了，请及时联系管理员！");
             return "fail";
         }
         seatService.deleteByOwner(users.get(0).getId(),speachService.getLastOne().getId());
         return "back_stage_view";
     }
+
+    @RequestMapping("/qrCode")
+    public String getMyQrcode(Integer userId,Model model) throws IOException, WriterException {
+        List<Seat> seats;
+        Seat seat;
+
+        //获取座位信息
+        seats= seatService.getByOwnerAndSpeach(userId,speachService.getLastOne().getId());
+        if (seats.size() != 1){
+            model.addAttribute("reason","您还没有预定座位，请先选座！");
+            return "fail";
+        }
+
+        seat = seats.get(0);
+
+        //二维码的base64编码
+        String myBase64QrCode = seatService.getMyQrcode(seat.getOwner(),seat.getSpeach(),seat.getSeatNum());
+
+        model.addAttribute("myQRCode",myBase64QrCode);
+
+        return "my_seat_code";
+    }
+
+    //鉴定是否是西南石油大学的学生
+    /*private static boolean isXiYou(String token){
+        User user=new User(token);
+        JsonObject obj=new JsonParser().parse(user.me()).getAsJsonObject();
+        JsonObject info=obj.get("info").getAsJsonObject();
+        String schoolId=info.get("yb_schoolid").getAsString();
+        return schoolId.equals("22017");
+    }*/
 
 }
