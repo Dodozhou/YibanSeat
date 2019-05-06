@@ -84,7 +84,9 @@ public class AESUtil {
             kg = KeyGenerator.getInstance(KEY_ALGORITHM);
 
             //AES 要求密钥长度为 128
-            kg.init(128, new SecureRandom(password.getBytes()));
+            SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG" );
+            secureRandom.setSeed(password.getBytes());
+            kg.init(128, secureRandom);
 
             //生成一个密钥
             SecretKey secretKey = kg.generateKey();

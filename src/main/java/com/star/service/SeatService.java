@@ -73,5 +73,16 @@ public class SeatService {
         return encoder.encode(outputStream.toByteArray());
     }
 
+    /**
+     * 更新座位签到情况
+     * @param sign true已签到 false未签到
+     * @param speachId 活动ID
+     * @param seatNum 座位号
+     */
+    @CacheEvict(value = "seatCache",allEntries = true)
+    public void updateSeatSign(boolean sign,int speachId, String seatNum){
+        seatMapper.updateSeatSign(sign,speachId,seatNum);
+    }
+
 
 }

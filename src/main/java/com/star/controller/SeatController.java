@@ -2,6 +2,7 @@ package com.star.controller;
 
 import com.google.gson.Gson;
 import com.google.zxing.WriterException;
+import com.star.entity.Response;
 import com.star.entity.Seat;
 import com.star.entity.Speach;
 import com.star.entity.User;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -154,6 +156,45 @@ public class SeatController {
         model.addAttribute("myQRCode",myBase64QrCode);
 
         return "my_seat_code";
+    }
+
+    /**
+     * 后台签到接口
+     * @param code 签到加密信息
+     * @return 成功success 失败fail
+     */
+    @GetMapping("/signOn")
+    @ResponseBody
+    public Response signOn(String code){
+        //解密信息
+        String info = AESUtil.decrypt(code,AESPassWd);
+        if (info == null)
+            return new Response(-1,"座位码错误");
+
+        //分解信息
+        String[] infos = info.split(";");
+        int speackId = Integer.valueOf(infos[0]);
+        int userId = Integer.valueOf(infos[1]);
+        String seatNum = infos[2];
+
+        //查询座位信息
+        List<Seat> seats = seatService.getByOwnerAndSpeach(userId,speackId);
+        if (seats.size() != 1)
+            return new Response(-1,"座位码错误");
+
+        //座位码验证
+        Seat seat = seats.get(0);
+        if (!seat.getSeatNum().equals(seatNum))
+            return new Response(-1,"座位码错误");
+
+        if (seat.isSigned())
+            return new Response(-2,"该座位码已经签到过了");
+
+        //签到
+        seat.setSigned(true);
+        seatService.updateSeatSign(true,speackId,seatNum);
+
+        return new Response(0,"签到成功");
     }
 
     //鉴定是否是西南石油大学的学生

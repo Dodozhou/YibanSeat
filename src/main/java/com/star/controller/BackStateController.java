@@ -1,10 +1,14 @@
 package com.star.controller;
 
 
+import com.star.util.AESUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +19,6 @@ import java.util.Map;
 @Controller
 public class BackStateController {
     private static final Logger logger= LogManager.getLogger(BaseController.class);
-
 
     @RequestMapping("/bs/releaseSpeach")
     public String releaseSpeach(HttpServletRequest request, Model model){

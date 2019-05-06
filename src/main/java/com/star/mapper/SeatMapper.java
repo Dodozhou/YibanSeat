@@ -76,4 +76,7 @@ public interface SeatMapper {
             @Result(property = "seatNum",  column = "seat_num")
     })
     List<String> getBySepach(int speachId);
+
+    @Update("update seat set signed=#{sign} where speach=#{speachId} and seat_num=#{seatNum}")
+    void updateSeatSign(boolean sign,int speachId,String seatNum);
 }

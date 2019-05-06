@@ -219,7 +219,7 @@ window.onload=function(){
 
     // 页面加载时请求相关活动信息，填充页面，然后再执行各种操作
         $.ajax({
-            url:'http://www.deardull.com:8080/getSpeach',
+            url:'https://www.deardull.com/getSpeach',
             type:'GET',
             dataType:'jsonp',
             jsonp:'callback',

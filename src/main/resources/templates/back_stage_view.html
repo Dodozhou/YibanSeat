@@ -34,6 +34,7 @@
                     <th>学号</th>
                     <th>姓名</th>
                     <th>座位号</th>
+                    <th>是否签到</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -77,12 +78,12 @@
         var $tbodyHtml='';
         $.ajax({
             type:'GET',
-            url:'http://www.deardull.com:8080/getAllSeatsForManage',
+            url:'https://www.deardull.com/getAllSeatsForManage',
             dataType:'jsonp',
             jsonp:'callback',
             success:function(data){
                 $.each(data,function(index,indexInfo){
-                    $tbodyHtml+='<tr><th scope="row">'+(index+1)+'</th><td>'+data[index].yiban_id+'</td><td>'+data[index].name+'</td><td>'+seatParse(data[index].seat_num)+'</td><td><form method="post" action="/deleteSeat"><input type="hidden" name="yiban_id" value="'+Number(data[index].yiban_id)+'"/> <input class="btn-primary" type="submit" value="删除"/></form></td></tr>';
+                    $tbodyHtml+='<tr><th scope="row">'+(index+1)+'</th><td>'+data[index].yiban_id+'</td><td>'+data[index].name+'</td><td>'+seatParse(data[index].seat_num)+'</td><td>'+(data[index].signed==true?'是':'否')+'</td><td><form method="post" action="/deleteSeat"><input type="hidden" name="yiban_id" value="'+Number(data[index].yiban_id)+'"/> <input class="btn-primary" type="submit" value="删除"/></form></td></tr>';
                 });
                 $('tbody').html($tbodyHtml);
 

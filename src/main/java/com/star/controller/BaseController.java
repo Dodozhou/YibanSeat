@@ -5,14 +5,9 @@ import cn.yiban.open.common.User;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.star.entity.Seat;
-import com.star.entity.Speach;
-import com.star.mapper.SeatMapper;
-import com.star.mapper.SpeachMapper;
-import com.star.mapper.UserMapper;
 import com.star.service.SeatService;
 import com.star.service.SpeachService;
 import com.star.service.UserService;
-import com.star.util.SeatUtil;
 
 
 import org.apache.logging.log4j.LogManager;
@@ -49,7 +44,7 @@ public class BaseController {
 
     private static final String appKey="f48cc159a0d4f1c7";
     private static final String appSecret="80c54652e5bcc48f83cb53337a4dca04";
-    private static final String callbackurl="http://www.deardull.com:8080/autho";
+    private static final String callbackurl="http://www.deardull.com/autho";
     //private static final String callbackurl="http://localhost:8080/autho";
 
     @Value("#{'${auth.user}'.split(',')}")
