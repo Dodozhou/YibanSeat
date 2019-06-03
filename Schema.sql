@@ -1,13 +1,3 @@
--- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
---
--- Host: localhost    Database: yiban_ticket
--- ------------------------------------------------------
--- Server version	5.7.13-log
-
-
---
--- Table structure for table `seat`
---
 
 DROP TABLE IF EXISTS `seat`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -21,18 +11,12 @@ CREATE TABLE `seat` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `seat`
---
 
 LOCK TABLES `seat` WRITE;
 /*!40000 ALTER TABLE `seat` DISABLE KEYS */;
 /*!40000 ALTER TABLE `seat` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `speach`
---
 
 DROP TABLE IF EXISTS `speach`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -48,19 +32,12 @@ CREATE TABLE `speach` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `speach`
---
 
 LOCK TABLES `speach` WRITE;
 /*!40000 ALTER TABLE `speach` DISABLE KEYS */;
 INSERT INTO `speach` VALUES (1,'\"心怀感恩，励志奋进\"大学生励志成长事迹报告会','周成','\"心怀感恩，励志奋进\"大学生励志成长事迹报告会','图书馆报告厅','10-20 14:30');
 /*!40000 ALTER TABLE `speach` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `user`
---
 
 DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

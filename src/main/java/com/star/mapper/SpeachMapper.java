@@ -16,7 +16,6 @@ public interface SpeachMapper {
     @Select("select * from speach")
     List<Speach> getAll();
 
-
     @Insert("insert into speach(title,description,place,time) " +
             "values(#{title},#{description},#{place},#{time})")
     @Options(useGeneratedKeys = true)

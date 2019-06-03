@@ -5,6 +5,7 @@ import com.star.entity.Seat;
 import com.star.mapper.SeatMapper;
 import com.star.util.AESUtil;
 import com.star.util.QrCodeCreateUtil;
+import org.springframework.transaction.annotation.Transactional;
 import sun.misc.BASE64Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

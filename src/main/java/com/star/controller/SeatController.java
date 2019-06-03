@@ -166,10 +166,13 @@ public class SeatController {
     @GetMapping("/signOn")
     @ResponseBody
     public Response signOn(String code){
-        //解密信息
-        String info = AESUtil.decrypt(code,AESPassWd);
-        if (info == null)
+        String info;
+        try {
+            //解密信息
+            info = AESUtil.decrypt(code,AESPassWd);
+        }catch (Exception e){
             return new Response(-1,"座位码错误");
+        }
 
         //分解信息
         String[] infos = info.split(";");
@@ -188,7 +191,7 @@ public class SeatController {
             return new Response(-1,"座位码错误");
 
         if (seat.isSigned())
-            return new Response(-2,"该座位码已经签到过了");
+            return new Response(-2,"座位已签到过");
 
         //签到
         seat.setSigned(true);
