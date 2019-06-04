@@ -19,7 +19,6 @@ public class UserService {
         return userMapper.getByYiBanId(yibanId);
     }
 
-    @Cacheable(value = "userCache",key = "#user.yibanId")
     public int insert(User user){
         return userMapper.insert(user);
     }

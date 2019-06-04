@@ -28,6 +28,7 @@ CREATE TABLE `speach` (
   `description` varchar(255) DEFAULT NULL,
   `place` varchar(45) DEFAULT NULL,
   `time` varchar(45) DEFAULT NULL,
+  `state` int DEFAULT 0 NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -45,7 +46,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
-  `yiban_id` varchar(45) DEFAULT NULL,
+  `yiban_id` varchar(45) unique DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
